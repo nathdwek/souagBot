@@ -16,5 +16,6 @@ void configQEI(){
     RPINR14bits.QEA1R = 0b10011;
     RPINR14bits.QEB1R = 0b10110;
     RPINR16bits.QEA2R = 0b11000;
-    RPINR16bits.QEB2R = 0b11001;
+    RPINR16bits.QEB2R = 0b11001;//Input mapping des QEI sur les pattes ou
+    //les encodeurs sont physiquement liés
 }
