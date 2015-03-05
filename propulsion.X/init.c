@@ -1,3 +1,5 @@
+#include <p33FJ128MC804.h>
+
 void configPWM(){
     RPOR6bits.RP13R = 0b10010;//Lie la patte rightPWM à l'OC1
     RPOR9bits.RP18R = 0b10011;//Lie la patte leftPWM à l'OC2
