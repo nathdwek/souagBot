@@ -5,7 +5,7 @@
  * Created on 4 mars 2015, 15:08
  */
 #include <p33FJ128MC804.h>
-#include <init.h>
+#include "init.h"
 
 void main() {
     configPWM();
