@@ -12,4 +12,8 @@ void configPWM();
 
 void configQEI();
 
+void configRegul();
+int leftTicks;
+int rightTicks;
+
 #endif	/* INIT_H */

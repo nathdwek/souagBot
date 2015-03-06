@@ -1,5 +1,7 @@
 #include <p33FJ128MC804.h>
 
+int PROC_FCY = 40000000;
+
 void configPWM(){
     RPOR6bits.RP13R = 0b10010;//Lie la patte rightPWM à l'OC1
     RPOR9bits.RP18R = 0b10011;//Lie la patte leftPWM à l'OC2
@@ -21,6 +23,18 @@ void configQEI(){
     RPINR16bits.QEB2R = 0b10100;//QEI1=>EncLeft
     /*Input mapping des QEI sur les pattes ou
     les encodeurs sont physiquement liés*/
-    //IEC3bits.QEI1IE = 0b1;
-    //IEC4bits.QEI2IE = 0b1;//Activation des interruptions
+    MAX1CNT = 60000;
+    MAX2CNT = 60000;
+    POS1CNT = MAX1CNT/2;
+    POS2CNT = MAX2CNT/2;
+}
+
+
+int leftTicks = 0;
+int rightTicks = 0;
+int REGUL_FCY = 100;
+void configRegul(){
+    T1CONbits.TCKPS = 0b10;//Prescaler 64
+    PR1=PROC_FCY/(REGUL_FCY*64);//100Hz
+    IEC0bits.T1IE = 1;//active l'interruption
 }
