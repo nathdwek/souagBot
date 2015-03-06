@@ -9,6 +9,7 @@
 #define	INIT_H
 
 void configPWM();
+
 void configQEI();
 
 #endif	/* INIT_H */
