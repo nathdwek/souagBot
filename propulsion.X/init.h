@@ -13,7 +13,14 @@ void configPWM();
 void configQEI();
 
 void configRegul();
-int leftTicks;
-int rightTicks;
+extern int leftSpins;
+extern int rightSpins;
+extern float kp;
+extern float ticksPerMeter;
+extern float accelConsigne[80];
+extern float leftConsigne;
+extern float rightConsigne;
+extern int consigneIndex;
+extern int accelerating;
 
 #endif	/* INIT_H */

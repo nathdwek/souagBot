@@ -9,10 +9,11 @@
 #include "isrs.h"
 
 void main() {
-    int positionAbs = 0;
     configPWM();
     configQEI();
     configRegul();
+    OC1RS = 7500;
+    OC2RS = 7500;
     while(1){
     }
 }
