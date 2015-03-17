@@ -22,5 +22,7 @@ extern float leftConsigne;
 extern float rightConsigne;
 extern int consigneIndex;
 extern int accelerating;
+extern int leftDistance;
+extern int rightDistance;
 
 #endif	/* INIT_H */

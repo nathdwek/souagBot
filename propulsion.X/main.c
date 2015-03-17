@@ -9,11 +9,13 @@
 #include "isrs.h"
 
 void main() {
+
+    init();
     configPWM();
     configQEI();
     configRegul();
-    OC1RS = 7500;
-    OC2RS = 7500;
+    OC1RS = 5000;
+    OC2RS = 10000;
     while(1){
     }
 }
