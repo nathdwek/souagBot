@@ -1,6 +1,5 @@
 #include <p33FJ128MC804.h>
 
-#include "init.h"
 //  BITS DE CONFIGURATION
 ///////////////////////////////////////////////////////////////////////////////
 // disables the watchdog
@@ -22,10 +21,6 @@ _FOSCSEL(FNOSC_FRC);
 // enables clock switching and configure the primary oscillator for a 10MHz crystal
 _FOSC(FCKSM_CSECMD & OSCIOFNC_OFF & POSCMD_XT);
 
-
-long PROC_FCY = 40000000;
-
-
 void init(void) {
     PLLFBD = 30; // M=32
     CLKDIVbits.PLLPOST = 0; // N1=2
@@ -36,6 +31,7 @@ void init(void) {
     while (OSCCONbits.COSC != 0b011);
 }
 
+long PROC_FCY = 40000000;
 
 void configPWM(){
     RPOR6bits.RP13R = 0b10010;//Lie la patte rightPWM à l'OC1
@@ -68,14 +64,17 @@ int REGUL_FCY = 100;
 int leftSpins;
 int rightSpins;
 float kp;
-float ticksPerMeter;
-float accelConsigne[80];
+float cmPerTick;
+float a;
+float leftDistance;
+float rightDistance;
+float leftSpeed;
+float rightSpeed;
+int acceleratingLeft;
+int acceleratingRight;
+float maxSpeed;
 float leftConsigne;
 float rightConsigne;
-int consigneIndex;
-int accelerating;
-int leftDistance;
-int rightDistance;
 void configRegul(){
     T1CONbits.TCKPS = 0b10;//Prescaler 64
     PR1=PROC_FCY/(REGUL_FCY*64);
@@ -89,21 +88,12 @@ void configRegul(){
     MAX2CNT = 360;//max = 65536
     rightDistance = 0;
     leftDistance = 0;
-    ticksPerMeter = 1145.9156;
-    kp = 1/ticksPerMeter;//8.49 1/m
-    /*float a = 0.0000025*ticksPerMeter;
-    float v = 0;
-    float ticks = 0;
-    int i;
-    for (i =0; i<80; i++){
-        v = v + a;
-        ticks = ticks + v ;
-        accelConsigne[i]=ticks;
-    }
-    leftConsigne = 0;
-    rightConsigne = 0;
-    consigneIndex = 0;
-    accelerating = 1;*/
+    leftSpeed = 0;
+    rightSpeed = 0;
+    cmPerTick = 0.08;
+    a = 50;//cm par tick de regulation carré
+    maxSpeed = 40;// cm par tick de regulation
+    kp = 0.00037;//0.0849;//8.49 1/m
 }
 
 

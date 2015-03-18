@@ -9,13 +9,16 @@
 #include "isrs.h"
 
 void main() {
-
     init();
     configPWM();
     configQEI();
     configRegul();
-    OC1RS = 5000;
-    OC2RS = 10000;
+    OC1RS = 7500;
+    OC2RS = 7500;
+    acceleratingLeft = 1;
+    acceleratingRight = 1;
+    leftConsigne = 0;
+    rightConsigne = 0;
     while(1){
     }
 }

@@ -13,16 +13,20 @@ void configPWM();
 void configQEI();
 
 void configRegul();
+extern int REGUL_FCY;
 extern int leftSpins;
 extern int rightSpins;
 extern float kp;
-extern float ticksPerMeter;
-extern float accelConsigne[80];
+extern float cmPerTick;
 extern float leftConsigne;
 extern float rightConsigne;
-extern int consigneIndex;
-extern int accelerating;
-extern int leftDistance;
-extern int rightDistance;
+extern int acceleratingLeft;
+extern int acceleratingRight;
+extern float a;
+extern float leftDistance;
+extern float rightDistance;
+extern float leftSpeed;
+extern float rightSpeed;
+extern float maxSpeed;
 
 #endif	/* INIT_H */
