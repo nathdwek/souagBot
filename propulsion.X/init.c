@@ -63,7 +63,10 @@ int REGUL_FCY = 100;
 
 int leftSpins;
 int rightSpins;
-float kp;
+float kpLeft;
+float kpRight;
+float zoneMorteLeft;
+float zoneMorteRight;
 float cmPerTick;
 float a;
 float leftDistance;
@@ -93,7 +96,10 @@ void configRegul(){
     cmPerTick = 0.08;
     a = 50;//cm par tick de regulation carré
     maxSpeed = 40;// cm par tick de regulation
-    kp = 0.00037;//0.0849;//8.49 1/m
+    kpLeft = 0.0003;
+    kpRight = 0.0003;//kp max pour pas sortir de 0.1=>0.2 de rapport cyclique
+    zoneMorteRight = 0.05*750/2500;
+    zoneMorteLeft = 0.05*500/2500;//zone morte mesurée * regle de trois
 }
 
 
