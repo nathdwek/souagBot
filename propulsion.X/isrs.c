@@ -23,31 +23,42 @@ void _ISR _QEI2Interrupt(void){//LEFT
 
 float leftPWM;//pour debugger
 float rightPWM;
+float thetaError;
+float theta;
 void _ISR _T1Interrupt(void){
     IFS0bits.T1IF = 0;
-    leftDistance = (leftSpins * MAX2CNT + POS2CNT);
-    leftDistance = leftDistance*cmPerTick;
-    rightDistance = rightSpins * MAX1CNT + POS1CNT;
-    rightDistance = rightDistance*cmPerTick;
+    float leftDistance = leftSpins * MAX2CNT + POS2CNT;
+    float rightDistance = rightSpins * MAX1CNT + POS1CNT;
+    float distance = 0.5*(leftDistance + rightDistance) * cmPerTick;
+    theta = 0.5* (rightDistance - leftDistance) * cmPerTick*5.0/22.5;
 
-    float leftError = (leftConsigne - leftDistance);
-    float rightError = (rightConsigne - rightDistance);
+    float distanceError = (distanceConsigne - distance);
+    thetaError = (thetaConsigne - theta);
 
-    leftPWM = 0.15 + sgn(leftError)*zoneMorteLeft + kpLeft * leftError ;
-    rightPWM = 0.15 - sgn (rightError)* zoneMorteRight  - kpRight * rightError;
+    leftPWM = 0.15 + kp * distanceError;
+    rightPWM = 0.15 - kp * distanceError;
+
+    if (thetaError < 0){
+        rightPWM = rightPWM - angularKp * thetaError;
+    }else{
+        leftPWM = leftPWM - angularKp * thetaError;
+    }
 
     OC1RS = rightPWM * PR2;
     OC2RS = leftPWM * PR2;
 
-    leftConsigne = leftConsigne + leftSpeed/REGUL_FCY;
-    rightConsigne = rightConsigne + rightSpeed/REGUL_FCY;
-    accelerate(&rightSpeed, &acceleratingRight);
-    accelerate(&leftSpeed, &acceleratingLeft);
+    distanceConsigne = distanceConsigne + speed/REGUL_FCY;
+    thetaConsigne = thetaConsigne + angularSpeed/REGUL_FCY;
+    accelerate(&speed, acceleration,
+               &accelerating, maxSpeed);
+    accelerate(&angularSpeed, angularAcceleration,
+               &acceleratingAngular, maxAngularSpeed);
 }
 
-void accelerate(float* speed, int* accelerating){
+void accelerate(float* speed, float acceleration,
+                int* accelerating, float maxSpeed){
     if (*accelerating==1){
-        *speed = *speed+a/REGUL_FCY;
+        *speed = *speed+acceleration/REGUL_FCY;
         if (*speed > maxSpeed){
             *accelerating = 0;
         }

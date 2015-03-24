@@ -63,21 +63,21 @@ int REGUL_FCY = 100;
 
 int leftSpins;
 int rightSpins;
-float kpLeft;
-float kpRight;
+float kp;
+float angularKp;
 float zoneMorteLeft;
 float zoneMorteRight;
 float cmPerTick;
-float a;
-float leftDistance;
-float rightDistance;
-float leftSpeed;
-float rightSpeed;
-int acceleratingLeft;
-int acceleratingRight;
+float acceleration;
+float angularAcceleration;
+float speed;
+float angularSpeed;
+int accelerating;
+int acceleratingAngular;
 float maxSpeed;
-float leftConsigne;
-float rightConsigne;
+float maxAngularSpeed;
+float distanceConsigne;
+float thetaConsigne;
 void configRegul(){
     T1CONbits.TCKPS = 0b10;//Prescaler 64
     PR1=PROC_FCY/(REGUL_FCY*64);
@@ -89,15 +89,15 @@ void configRegul(){
     POS2CNT = 0;
     MAX1CNT = 360;
     MAX2CNT = 360;//max = 65536
-    rightDistance = 0;
-    leftDistance = 0;
-    leftSpeed = 0;
-    rightSpeed = 0;
+    speed = 0;
+    angularSpeed = 0;
     cmPerTick = 0.08;
-    a = 50;//cm par tick de regulation carré
+    acceleration = 50;//cm par tick de regulation carré
+    angularAcceleration = 0;
     maxSpeed = 40;// cm par tick de regulation
-    kpLeft = 0.0003;
-    kpRight = 0.0003;//kp max pour pas sortir de 0.1=>0.2 de rapport cyclique
+    maxAngularSpeed = 0;
+    kp = 0.00007;
+    angularKp = 0.003;//kp max pour pas sortir de 0.1=>0.2 de rapport cyclique
     zoneMorteRight = 0.05*750/2500;
     zoneMorteLeft = 0.05*500/2500;//zone morte mesurée * regle de trois
 }

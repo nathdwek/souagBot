@@ -15,10 +15,10 @@ void main() {
     configRegul();
     OC1RS = 7500;
     OC2RS = 7500;
-    acceleratingLeft = 1;
-    acceleratingRight = 1;
-    leftConsigne = 0;
-    rightConsigne = 0;
+    accelerating = 1;
+    acceleratingAngular = 0;
+    distanceConsigne = 0;
+    thetaConsigne = 0;
     while(1){
     }
 }
