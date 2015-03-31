@@ -18,12 +18,13 @@ extern int leftSpins;
 extern int rightSpins;
 extern float kp;
 extern float angularKp;
-extern float zoneMorteLeft;
-extern float zoneMorteRight;
+extern float oldRightDistance;
+extern float oldLeftDistance;
+extern float theta;
 extern float cmPerTick;
 extern float distanceConsigne;
 extern float thetaConsigne;
-extern int accelerating;
+extern float accelerating;
 extern int acceleratingAngular;
 extern float acceleration;
 extern float angularAcceleration;
@@ -31,5 +32,6 @@ extern float speed;
 extern float angularSpeed;
 extern float maxSpeed;
 extern float maxAngularSpeed;
+extern float goalDistance;
 
 #endif	/* INIT_H */

@@ -15,10 +15,11 @@ void main() {
     configRegul();
     OC1RS = 7500;
     OC2RS = 7500;
-    accelerating = 1;
+    accelerating = 1.0;
     acceleratingAngular = 0;
     distanceConsigne = 0;
     thetaConsigne = 0;
+    goalDistance = 400;//cm
     while(1){
     }
 }

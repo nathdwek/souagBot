@@ -9,7 +9,7 @@
 #define	UTIL_H
 
 
-int sgn(float number);
+float abs(float number);
 
 
 #endif	/* UTIL_H */
