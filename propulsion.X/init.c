@@ -65,6 +65,8 @@ int rightSpins;
 float oldRightDistance;
 float oldLeftDistance;
 float theta;
+float kp;
+float angularKp;
 
 //Persistantes qui définissent l'état du robot
 float accelerating;
@@ -75,23 +77,8 @@ float goalDistance;
 float goalTheta;
 float speedConsigne;
 float angularSpeedConsigne;
-float kp;
-float angularKp;
-
-void configRegul(){
-    //bits de config
-    T1CONbits.TCKPS = 0b10;//Prescaler 64
-    PR1=PROC_FCY/(REGUL_FCY*64);
-    IEC0bits.T1IE = 1;//active l'interruption
-    T1CONbits.TON = 1;//lance le timer
-    //Un tour de roue = unité de comptage
-    MAX1CNT = 360;
-    MAX2CNT = 360;//max = 65536
-    
-    resetPositionVariables();
-    resetStateVariables();
-    resetMotors();
-}
+int goingStraight;
+int rotating;
 
 void resetPositionVariables(){
     leftSpins = 0;
@@ -109,11 +96,32 @@ void resetStateVariables(){
     goalDistance = 0;
     accelerating = 0.0;
     acceleratingAngular = 0.0;
-    kp = PERTURB_KP;
-    angularKp = PERTURB_KP;
+    kp = 0.00006;
+    angularKp = 0.0001;
+    distanceConsigne = 0;
+    thetaConsigne = 0;
+    goingStraight = 0;
+    rotating = 0;
 }
 
 void resetMotors(){
     OC1RS = 7500;
     OC2RS = 7500;
+}
+
+void configRegul(){
+    //bits de config
+    //Timer de la régulation
+    T1CONbits.TCKPS = 0b10;//Prescaler 64
+    PR1=PROC_FCY/(REGUL_FCY*64);
+    IEC0bits.T1IE = 1;//active l'interruption
+    T1CONbits.TON = 1;//lance le timer
+
+    //Un tour de roue = unité de comptage
+    MAX1CNT = 360;
+    MAX2CNT = 360;//max = 65536
+    
+    resetPositionVariables();
+    resetStateVariables();
+    resetMotors();
 }

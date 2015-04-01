@@ -8,9 +8,11 @@
 #ifndef UTIL_H
 #define	UTIL_H
 
-float abs(float number);
+float fabs(float number);
 void accelerate(float* speed, float acceleration,
                 float* accelerating, float maxSpeed);
+int sgn(float number);
+
 
 #endif	/* UTIL_H */
 

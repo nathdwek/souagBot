@@ -8,6 +8,7 @@
       <itemPath>isrs.h</itemPath>
       <itemPath>util.h</itemPath>
       <itemPath>globals.h</itemPath>
+      <itemPath>stateDefiners.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

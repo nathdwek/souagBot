@@ -7,17 +7,14 @@
 #include <p33FJ128MC804.h>
 #include "init.h"
 #include "isrs.h"
+#include "stateDefiners.h"
 
-void main() {
+int main() {
     init();
     configPWM();
     configQEI();
     configRegul();
-    rotate(1.0);
-    accelerating = 0.0;
-    acceleratingAngular = -1.0;
-    distanceConsigne = 0;
-    thetaConsigne = 0;
+    rotate(1.57);
     while(1){
     }
 }
