@@ -8,9 +8,9 @@
 #ifndef UTIL_H
 #define	UTIL_H
 
-
 float abs(float number);
-
+void accelerate(float* speed, float acceleration,
+                float* accelerating, float maxSpeed);
 
 #endif	/* UTIL_H */
 

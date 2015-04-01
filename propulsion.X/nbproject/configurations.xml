@@ -7,6 +7,7 @@
       <itemPath>init.h</itemPath>
       <itemPath>isrs.h</itemPath>
       <itemPath>util.h</itemPath>
+      <itemPath>globals.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -19,6 +20,8 @@
       <itemPath>main.c</itemPath>
       <itemPath>isrs.c</itemPath>
       <itemPath>util.c</itemPath>
+      <itemPath>globals.c</itemPath>
+      <itemPath>statesDefiners.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

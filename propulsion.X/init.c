@@ -1,5 +1,7 @@
 #include <p33FJ128MC804.h>
 
+#include "globals.h"
+
 //  BITS DE CONFIGURATION
 ///////////////////////////////////////////////////////////////////////////////
 // disables the watchdog
@@ -31,8 +33,6 @@ void init(void) {
     while (OSCCONbits.COSC != 0b011);
 }
 
-long PROC_FCY = 40000000;
-
 void configPWM(){
     RPOR6bits.RP13R = 0b10010;//Lie la patte rightPWM à l'OC1
     RPOR9bits.RP18R = 0b10011;//Lie la patte leftPWM à l'OC2
@@ -48,64 +48,72 @@ void configPWM(){
 void configQEI(){
     QEI1CONbits.QEIM=0b111;
     QEI2CONbits.QEIM=0b111;//MODE 4X sans remise a zero par l'index
+    /*Input mapping des QEI sur les pattes ou
+    les encodeurs sont physiquement liés*/
     RPINR14bits.QEA1R = 0b11000;
     RPINR14bits.QEB1R = 0b11001;//QEI1=>EncRight
     RPINR16bits.QEA2R = 0b10011;
     RPINR16bits.QEB2R = 0b10100;//QEI2=>EncLeft
-    /*Input mapping des QEI sur les pattes ou
-    les encodeurs sont physiquement liés*/
+    //activation des interruptions quand POSXCNT overflow
     IEC3bits.QEI1IE = 1;
-    IEC4bits.QEI2IE = 1;//activation des interruptions quand POSXCNT ol
+    IEC4bits.QEI2IE = 1;
 }
 
-
-int REGUL_FCY = 100;
-
+//Persistantes pour calculer les distances et angles
 int leftSpins;
 int rightSpins;
-float kp;
-float angularKp;
-float zoneMorteLeft;
-float zoneMorteRight;
-float cmPerTick;
-float acceleration;
-float angularAcceleration;
-float speed;
-float angularSpeed;
-float accelerating;
-int acceleratingAngular;
-float maxSpeed;
-float maxAngularSpeed;
-float distanceConsigne;
-float thetaConsigne;
 float oldRightDistance;
 float oldLeftDistance;
 float theta;
+
+//Persistantes qui définissent l'état du robot
+float accelerating;
+float acceleratingAngular;
+float distanceConsigne;
+float thetaConsigne;
 float goalDistance;
+float goalTheta;
+float speedConsigne;
+float angularSpeedConsigne;
+float kp;
+float angularKp;
+
 void configRegul(){
+    //bits de config
     T1CONbits.TCKPS = 0b10;//Prescaler 64
     PR1=PROC_FCY/(REGUL_FCY*64);
     IEC0bits.T1IE = 1;//active l'interruption
     T1CONbits.TON = 1;//lance le timer
+    //Un tour de roue = unité de comptage
+    MAX1CNT = 360;
+    MAX2CNT = 360;//max = 65536
+    
+    resetPositionVariables();
+    resetStateVariables();
+    resetMotors();
+}
+
+void resetPositionVariables(){
     leftSpins = 0;
     rightSpins = 0;
     POS1CNT = 0;
     POS2CNT = 0;
-    MAX1CNT = 360;
-    MAX2CNT = 360;//max = 65536
     oldRightDistance = 0;
     oldLeftDistance= 0;
     theta = 0;
-    speed = 0;
-    angularSpeed = 0;
-    cmPerTick = 0.08;
-    acceleration = 50;//cm par seconde au carré
-    angularAcceleration = 0;
-    maxSpeed = 40;// cm par seconde
-    maxAngularSpeed = 0;
-    kp = 0.00006;//kp max pour pas sortir de 0.1=>0.2 de rapport cyclique
-    angularKp = 0.2;//et pas d'oscillation autour de la ligne droite
-    goalDistance = 0;
 }
 
+void resetStateVariables(){
+    speedConsigne = 0;
+    angularSpeedConsigne = 0;
+    goalDistance = 0;
+    accelerating = 0.0;
+    acceleratingAngular = 0.0;
+    kp = PERTURB_KP;
+    angularKp = PERTURB_KP;
+}
 
+void resetMotors(){
+    OC1RS = 7500;
+    OC2RS = 7500;
+}
