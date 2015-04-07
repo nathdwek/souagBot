@@ -9,6 +9,7 @@
 #define	INIT_H
 
 void init(void);
+void initUart(void);
 
 #endif	/* INIT_H */
 

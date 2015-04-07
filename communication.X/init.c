@@ -1,5 +1,5 @@
 #include <p33FJ128GP802.h>
-/*
+
 
 //  BITS DE CONFIGURATION
 ///////////////////////////////////////////////////////////////////////////////
@@ -31,5 +31,30 @@ void init(void) {
     // Wait for Clock switch to occur
     while (OSCCONbits.COSC != 0b011);
 }
- *
- * */
+
+void initUart(void){
+    //Config Générale
+    U1MODEbits.UARTEN = 1;//Active l'uart 1
+    U1MODEbits.USIDL = 0;//uart fonctionne quand uC
+                         //en mode idle. Just in case, whatever.
+    U1MODEbits.IREN = 0;//IRDA off.
+    U1MODEbits.UEN = 0b00;//Seuls les ports U1TX et U1RX sont utilisés.
+                          //=>Donc on s'en fout de RTSMD
+    U1MODEbits.WAKE = 1;//Wake up si start bit détecté. Just in case, whatever.
+    U1MODEbits.LPBACK = 0;//0:inter uC. 1: test uC vers lui même.
+    U1MODEbits.ABAUD = 0;//Auto Baud off.
+    U1MODEbits.URXINV = 0;//U1RX actif à l'état haut
+    U1MODEbits.BRGH = 0;//Standard speed mode
+    U1MODEbits.PDSEL = 0b01;//8bit data, bit de parité
+    U1MODEbits.STSEL = 0;//1 stop bit.
+
+    //Modes d'interruption:
+    U1STAbits.UTXISEL0 = 0;
+    U1STAbits.UTXISEL1 = 0;//Déclenche une interruption dès qu'il est possible
+                           //d'écrire dans le registre d'envoi
+    U1STAbits.URXISEL = 0b00;//Déclenche une interruption à chaque trame reçue
+
+    //Polarité
+    U1STAbits.UTXINV = 1;
+    U1MODEbits.URXINV = 0;//tout actif à l'état haut
+}
