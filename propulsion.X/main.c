@@ -14,7 +14,8 @@ int main() {
     configPWM();
     configQEI();
     configRegul();
-    rotate(1.57);
+    initUart();
+    //rotate(1.57);
     while(1){
     }
 }
