@@ -1,4 +1,5 @@
 #include <p33FJ128MC804.h>
+
 #include "init.h"
 #include "util.h"
 #include "globals.h"
@@ -92,4 +93,11 @@ void _ISR _T1Interrupt(void){
 
     checkTerminalConditions();
     updateConsignes();
+}
+
+void _ISR _U1RXInterrupt(void){
+    IFS0bits.U1RXIF = 0;
+    if ((U1STAbits.PERR || U1STAbits.FERR )== 0 ){
+        received = U1RXREG;
+    }
 }
