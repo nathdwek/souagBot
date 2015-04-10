@@ -16,11 +16,3 @@ int sgn(float number){
     else
         return 0;
 }
-
-void accelerate(float* speed, float acceleration,
-                float* accelerating, float maxSpeed){
-    *speed = *speed+(*accelerating)*(acceleration)/REGUL_FCY;
-    if (fabs(*speed) > maxSpeed && sgn(*accelerating) == sgn(goalDistance)){
-        *accelerating = 0.0;
-    }
-}

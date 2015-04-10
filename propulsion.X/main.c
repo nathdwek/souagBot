@@ -5,9 +5,12 @@
  * Created on 4 mars 2015, 15:08
  */
 #include <p33FJ128MC804.h>
+
 #include "init.h"
-#include "isrs.h"
-#include "stateDefiners.h"
+#include "decision.h"
+#include "wheels.h"
+#include "regul.h"
+#include "uart.h"
 
 int main() {
     init();

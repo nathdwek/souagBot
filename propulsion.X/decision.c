@@ -1,8 +1,31 @@
 #include <p33FJ128MC804.h>
 
-#include "init.h"
+#include "regul.h"
 #include "globals.h"
 #include "util.h"
+#include "wheels.h"
+
+//Persistantes qui définissent l'état du robot
+float accelerating;
+float acceleratingAngular;
+float goalDistance;
+float goalTheta;
+int goingStraight;
+int rotating;
+
+void resetStateVariables(){
+    speedConsigne = 0;
+    angularSpeedConsigne = 0;
+    goalDistance = 0;
+    accelerating = 0.0;
+    acceleratingAngular = 0.0;
+    kp = 0.00006;
+    angularKp = 0.0001;
+    distanceConsigne = 0;
+    thetaConsigne = 0;
+    goingStraight = 0;
+    rotating = 0;
+}
 
 void stop(){
     resetMotors();

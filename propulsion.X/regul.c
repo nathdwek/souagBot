@@ -1,41 +1,42 @@
 #include <p33FJ128MC804.h>
 
-#include "init.h"
-#include "util.h"
 #include "globals.h"
+#include "decision.h"
+#include "wheels.h"
+#include "util.h"
 
-void _ISR _QEI1Interrupt(void){//RIGHT
-    IFS3bits.QEI1IF = 0;
-    if (QEI1CONbits.UPDN == 1){
-        rightSpins = rightSpins + 1;
-    }else{
-        rightSpins = rightSpins - 1;
+#define PROC_FCY 40000000
+
+//coeffs de la régul
+float kp;
+float angularKp;
+
+//consignes. Globales car sont le résultats d'une intégrale
+float distanceConsigne;
+float thetaConsigne;
+//Consignes intermédiaires (sont uniquement intégrées pour obtenir les consignes
+//de position.
+float speedConsigne;
+float angularSpeedConsigne;
+
+void configRegul(){
+    //Timer de la régulation
+    T1CONbits.TCKPS = 0b10;//Prescaler 64
+    PR1=PROC_FCY/(REGUL_FCY*64);
+    IEC0bits.T1IE = 1;//active l'interruption
+    T1CONbits.TON = 1;//lance le timer
+    //Crée des consignes qui mettent le robot à l'arrêt.
+    resetStateVariables();
+}
+
+void accelerate(float* speed, float acceleration,
+                float* accelerating, float maxSpeed){
+    *speed = *speed+(*accelerating)*(acceleration)/REGUL_FCY;
+    if (fabs(*speed) > maxSpeed && sgn(*accelerating) == sgn(goalDistance)){
+        *accelerating = 0.0;
     }
-    
 }
 
-void _ISR _QEI2Interrupt(void){//LEFT
-    IFS4bits.QEI2IF = 0;
-    if (QEI2CONbits.UPDN == 1){
-        leftSpins = leftSpins - 1;
-    }else{
-        leftSpins = leftSpins +1;
-    }
-}
-
-float readDistances(){
-    float leftDistance = leftSpins * (float)MAX2CNT - (float)POS2CNT;
-    float rightDistance = rightSpins * (float)MAX1CNT + (float)POS1CNT;
-    float distance = 0.5*(leftDistance + rightDistance) * CM_PER_TICK;
-
-    float omega = (rightDistance - oldRightDistance
-                   - (leftDistance - oldLeftDistance))*CM_PER_TICK/22.5;
-    theta = theta + omega;
-
-    oldRightDistance = rightDistance;
-    oldLeftDistance = leftDistance;
-    return distance;
-}
 
 void updateConsignes(void){
     distanceConsigne = distanceConsigne + speedConsigne/REGUL_FCY;
@@ -85,19 +86,9 @@ void _ISR _T1Interrupt(void){
     IFS0bits.T1IF = 0;
 
     float distance=readDistances();
-    //theta est en variable globale car il est l'intégrale de omega donc il
-    //doit persister
-    
 
     setPWMs(distance);
 
     checkTerminalConditions();
     updateConsignes();
-}
-
-void _ISR _U1RXInterrupt(void){
-    IFS0bits.U1RXIF = 0;
-    if ((U1STAbits.PERR || U1STAbits.FERR )== 0 ){
-        received = U1RXREG;
-    }
 }
