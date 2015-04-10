@@ -2,6 +2,7 @@
 
 #include "init.h"
 #include "globals.h"
+#include "uart.h"
 
 int main(void){
     init();
@@ -25,12 +26,5 @@ void _ISR _T1Interrupt(void){
             sent=0b00000000;
         }
         U1TXREG = sent;
-    }
-}
-
-void _ISR _U1RXInterrupt(void){
-    IFS0bits.U1RXIF = 0;
-    if ((U1STAbits.PERR || U1STAbits.FERR )== 0 ){
-        received = U1RXREG;
     }
 }
