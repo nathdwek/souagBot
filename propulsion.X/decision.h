@@ -8,19 +8,18 @@
 #ifndef DECISION_H
 #define	DECISION_H
 
-extern float accelerating;
-extern float acceleratingAngular;
-extern float goalDistance;
+extern char accelerating;
+extern char acceleratingAngular;
+extern char goalDistance;
 extern float goalTheta;
-extern int goingStraight;
-extern int rotating;
+extern char goingStraight;
+extern char rotating;
 
 void resetStateVariables();
 
-void stop();
+void rotate(char angleInDegrees, char way);
+void straight(char distance);
 
-void rotate(float angle);
-void straight(float distance);
 void interpretCommand(unsigned char command, unsigned char param);
 
 #endif	/* DECISION_H */

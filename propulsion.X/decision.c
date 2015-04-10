@@ -6,19 +6,19 @@
 #include "wheels.h"
 
 //Persistantes qui définissent l'état du robot
-float accelerating;
-float acceleratingAngular;
-float goalDistance;
+char accelerating;
+char acceleratingAngular;
+char goalDistance;
 float goalTheta;
-int goingStraight;
-int rotating;
+char goingStraight;
+char rotating;
 
 void resetStateVariables(){
     speedConsigne = 0;
     angularSpeedConsigne = 0;
     goalDistance = 0;
-    accelerating = 0.0;
-    acceleratingAngular = 0.0;
+    accelerating = 0;
+    acceleratingAngular = 0;
     kp = 0.00006;
     angularKp = 0.0001;
     distanceConsigne = 0;
@@ -33,21 +33,24 @@ void stop(){
     resetStateVariables();
 }
 
-void straight(float targetDistance){
+void straight(char newGoalDistance){
     stop();
     kp = 0.002;
     angularKp = 0.2;
-    accelerating = sgn(targetDistance);
-    goalDistance = targetDistance;
+    accelerating = sgn(newGoalDistance);
+    goalDistance = newGoalDistance;
     goingStraight = 1;
 }
 
-void rotate(float angle){
+void rotate(char angleInDegrees, char way){
     stop();
+    int signedAngleInDegrees = angleInDegrees * way;
+    float angleInRadians = signedAngleInDegrees;
+    angleInRadians = angleInRadians*3.141592/180.0;
     kp = 0.00006;
     angularKp = 0.005;
-    acceleratingAngular = sgn(angle);
-    goalTheta  = angle;
+    acceleratingAngular = way;
+    goalTheta  = angleInRadians;
     rotating = 1;
 }
 

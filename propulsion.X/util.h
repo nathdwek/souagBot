@@ -9,10 +9,8 @@
 #define	UTIL_H
 
 float fabs(float number);
-void accelerate(float* speed, float acceleration,
-                float* accelerating, float maxSpeed);
-int sgn(float number);
-
+char fsgn(float number);
+char sgn(char number);
 
 #endif	/* UTIL_H */
 

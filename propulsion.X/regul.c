@@ -30,10 +30,10 @@ void configRegul(){
 }
 
 void accelerate(float* speed, float acceleration,
-                float* accelerating, float maxSpeed){
+                char* accelerating, float maxSpeed){
     *speed = *speed+(*accelerating)*(acceleration)/REGUL_FCY;
     if (fabs(*speed) > maxSpeed && sgn(*accelerating) == sgn(goalDistance)){
-        *accelerating = 0.0;
+        *accelerating = 0;
     }
 }
 
@@ -72,8 +72,8 @@ void checkTerminalConditions(){
         }
     }
     else if (rotating == 1){
-        if (fabs(sgn(goalTheta)*(goalTheta-thetaConsigne) - 1.5) < 0.05){
-            acceleratingAngular = -sgn(goalTheta);
+        if (fabs(fsgn(goalTheta)*(goalTheta-thetaConsigne) - 1.5) < 0.05){
+            acceleratingAngular = -fsgn(goalTheta);
         }
         else if (fabs(goalTheta - thetaConsigne) < 0.05){
             acceleratingAngular = 0.0;
