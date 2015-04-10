@@ -50,3 +50,17 @@ void rotate(float angle){
     goalTheta  = angle;
     rotating = 1;
 }
+
+void interpretCommand(unsigned char command, unsigned char param){
+    switch (command){
+        case 0:
+            straight( (char) param );
+            break;
+        case 1:
+            rotate(param, -1);
+            break;
+        case 2:
+            rotate(param, 1);
+            break;
+    }
+}

@@ -1,6 +1,10 @@
 #include <p33FJ128MC804.h>
 
 #include "globals.h"
+#include "decision.h"
+
+unsigned char receiverState;
+unsigned char param;
 
 void initUart(void){
     //Config Générale
@@ -38,16 +42,49 @@ void initUart(void){
     //Start uart et ses composants
     U1MODEbits.UARTEN = 1;//Active l'uart 1
     U1STAbits.UTXEN = 1;//UART prend le controle des ports
+
+    //Initialise le receiver software
+    receiverState = 0x00;
 }
 
-void handle(char received){
-    if ( ((received && 0b00100000) == (received && 0b00010000))
-       &&((received && 0b00001000) == (received && 0b00000100))
-       &&((received && 0b00000010) == (received && 0b00000001))
-       ){
-
+char askrepeat(){
+    if (U1STAbits.UTXBF == 0){
+        U1TXREG = 0b00000001;
     }else{
+        //HOPE.LIKE.HELL.
+    }
+    return 0x00;
+}
 
+char handleParam1(char received){
+    if (receiverState == 0x00){
+        param = (received && 0b00111100)*4;
+        return 0x01;
+    }else{
+        return askrepeat();
+    }
+}
+
+char handleParam2(char received){
+    if (receiverState == 0x00){
+        return askrepeat();
+    }else{
+        param = param + (received && 0b00111100)/4;
+        unsigned char command = (received && 0b11000000)/64;
+        interpretCommand(command, param);
+        return 0x00;
+    }
+}
+
+void handleReceived(char received){
+    if ((received && 0b00000011) == (0x00)){
+        if ((received && 0b11000000) == 0b11000000){
+            receiverState = handleParam1(received);
+        }else{
+            receiverState = handleParam2(received);
+        }
+    }else{
+        receiverState = askrepeat();
     }
 }
 
@@ -55,6 +92,6 @@ void _ISR _U1RXInterrupt(void){
     IFS0bits.U1RXIF = 0;
     if ((U1STAbits.PERR || U1STAbits.FERR )== 0 ){
         char received = U1RXREG;
-        handle(received);
+        handleReceived(received);
     }
 }

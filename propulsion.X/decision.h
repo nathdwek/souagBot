@@ -21,6 +21,7 @@ void stop();
 
 void rotate(float angle);
 void straight(float distance);
+void interpretCommand(unsigned char command, unsigned char param);
 
 #endif	/* DECISION_H */
 
