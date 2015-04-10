@@ -18,7 +18,7 @@ int main() {
     configQEI();
     configRegul();
     initUart();
-    //rotate(1.57);
+    straight(100);
     while(1){
     }
 }
