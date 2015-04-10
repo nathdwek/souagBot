@@ -40,9 +40,21 @@ void initUart(void){
     U1STAbits.UTXEN = 1;//UART prend le controle des ports
 }
 
+void handle(char received){
+    if ( ((received && 0b00100000) == (received && 0b00010000))
+       &&((received && 0b00001000) == (received && 0b00000100))
+       &&((received && 0b00000010) == (received && 0b00000001))
+       ){
+
+    }else{
+
+    }
+}
+
 void _ISR _U1RXInterrupt(void){
     IFS0bits.U1RXIF = 0;
     if ((U1STAbits.PERR || U1STAbits.FERR )== 0 ){
-        received = U1RXREG;
+        char received = U1RXREG;
+        handle(received);
     }
 }

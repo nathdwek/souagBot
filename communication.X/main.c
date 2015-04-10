@@ -8,7 +8,7 @@ int main(void){
     init();
     initUart();
     T1CONbits.TCKPS = 0b11;
-    PR1=65535;
+    PR1 = 65535;
     IEC0bits.T1IE = 1;
     T1CONbits.TON = 1;
     while(1){
