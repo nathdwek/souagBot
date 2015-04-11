@@ -2,7 +2,8 @@
 
 //Constantes pour l'UART
 #define BAUDRATE 9600
-const int BRGVAL = ((PROC_FCY / BAUDRATE) / 16) - 1;
+#define BRGH_COEFF 4
+const int BRGVAL = ((PROC_FCY / BAUDRATE) / BRGH_COEFF) - 1;
 
 //Constantes de la régulation
 const int REGUL_FCY = 100;

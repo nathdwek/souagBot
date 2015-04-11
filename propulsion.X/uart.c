@@ -18,12 +18,13 @@ void initUart(void){
                           //=>Donc on s'en fout de RTSMD
     U1MODEbits.LPBACK = 0;//0:inter uC. 1: test uC vers lui même.
     U1MODEbits.ABAUD = 0;//Auto Baud off.
-    U1MODEbits.BRGH = 0;//Standard speed mode
+    U1MODEbits.BRGH = 1;//16x speed mode.
+    //Plus robuste et de toute façon notre baudrate est bien inférieur au max.
     U1BRG = BRGVAL;//Fixe le baud rate par la longueur du timer lié
     U1MODEbits.PDSEL = 0b01;//8bit data, bit de parité (paire)
     U1MODEbits.STSEL = 0;//1 stop bit.
 
-    //Modes d'interruption:
+    //Modes d'interruption
     IEC0bits.U1TXIE = 0;//Disable UART TX interrupt
     //=>Osef des deux lignes suivantes:
     //U1STAbits.UTXISEL0 = 0;
