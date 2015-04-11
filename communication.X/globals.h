@@ -8,7 +8,7 @@
 #ifndef GLOBALS_H
 #define	GLOBALS_H
 
-extern const long PROC_FCY;
+#define PROC_FCY 40000000
 
 extern const int BAUDRATE;
 extern const int BRGVAL;

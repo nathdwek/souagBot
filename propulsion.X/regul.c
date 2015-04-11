@@ -5,8 +5,6 @@
 #include "wheels.h"
 #include "util.h"
 
-#define PROC_FCY 40000000
-
 //coeffs de la régul
 float kp;
 float angularKp;

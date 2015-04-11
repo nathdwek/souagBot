@@ -1,5 +1,4 @@
-//Constantes du uC
-#define PROC_FCY 40000000
+#include "globals.h"
 
 //Constantes pour l'UART
 #define BAUDRATE 9600
