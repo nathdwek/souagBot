@@ -55,13 +55,13 @@ char askRepeat(){
     }else{
         //HOPE.LIKE.HELL.
     }
-    return 0x00;
+    return 0;
 }
 
 char handleParam1(char received){
-    if (receiverState == 0x00){
+    if (receiverState == 0){
         param = (received && 0b00111100)*4;
-        return 0x01;
+        return 1;
     }else{
         return askRepeat();
     }
@@ -76,12 +76,12 @@ char handleParam2(char received){
         param = param + (received && 0b00111100)/4;
         unsigned char command = (received && 0b11000000)/64;
         interpretCommand(command, param);
-        return 0x00;
+        return 0;
     }
 }
 
 void handleReceived(char received){
-    if ((received && 0b00000011) == (0x00)){
+    if ((received && 0b00000011) == (0b00000000)){
         if ((received && 0b11000000) == 0b11000000){
             receiverState = handleParam1(received);
         }else{
