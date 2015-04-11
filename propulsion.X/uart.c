@@ -50,6 +50,7 @@ void initUart(void){
 }
 
 char askRepeat(){
+//Il y a eu une erreur. Demande de répéter une commande entière et état=>0.
     if (U1STAbits.UTXBF == 0){
         U1TXREG = 0b00000001;
     }else{
@@ -59,10 +60,15 @@ char askRepeat(){
 }
 
 char handleParam1(char received){
+//Le char reçu semble contenir la première partie du paramètre.
     if (receiverState == 0){
+    //OK ça colle avec l'état du receiver.
         param = (received && 0b00111100)*4;
+        //Les 4 bits du milieu => Les 4 MSBs du param
         return 1;
+        //Passe à l'état 1 puisqu'on a reçu la première partie d'une commande.
     }else{
+    //Erreur, on s'attendait à la fin d'une commande.
         return askRepeat();
     }
 }
@@ -73,21 +79,30 @@ char handleParam2(char received){
     //Erreur, on a jamais reçu de première partie
         return askRepeat();
     }else{
+    //OK, ça colle avec l'état du receiver.
         param = param + (received && 0b00111100)/4;
+        //Les 4 bits du milieu => Les 4 LSBs du param
         unsigned char command = (received && 0b11000000)/64;
+        //Les 2 bits du début => les 2 bits de commande
         interpretCommand(command, param);
+        //Commande traitée.
         return 0;
+        //Retourne à l'état 0 pour recevoir une nouvelle commande.
     }
 }
 
 void handleReceived(char received){
     if ((received && 0b00000011) == (0b00000000)){
+    //Deux derniers bits toujours nuls dans le cas d'une commande correcte.
         if ((received && 0b11000000) == 0b11000000){
+        //Deux premiers bits sont 0b11 si permière partie de commande
             receiverState = handleParam1(received);
         }else{
+        //0b00,01,10:Deuxième partie de commande
             receiverState = handleParam2(received);
         }
     }else{
+    //Erreur
         receiverState = askRepeat();
     }
 }
@@ -95,6 +110,7 @@ void handleReceived(char received){
 void _ISR _U1RXInterrupt(void){
     IFS0bits.U1RXIF = 0;
     if ((U1STAbits.PERR || U1STAbits.FERR )== 0 ){
+    //Check erreur de parité ou de formattage
         char received = U1RXREG;
         handleReceived(received);
     }
