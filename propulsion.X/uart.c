@@ -46,7 +46,7 @@ void initUart(void){
     U1STAbits.UTXEN = 0;//UART prend le controle des ports
 
     //Initialise le receiver software
-    receiverState = 0x00;
+    receiverState = 0;
 }
 
 char askRepeat(){
