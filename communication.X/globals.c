@@ -5,6 +5,3 @@
 #define BAUDRATE 9600
 const int BRGVAL = ((PROC_FCY / BAUDRATE) / 16) - 1;
 
-//debug
-char received;
-char sent = 0b00000000;

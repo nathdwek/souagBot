@@ -19,8 +19,5 @@ extern const float ANGULAR_ACCELERATION;
 extern const float MAX_ANGULAR_SPEED;
 extern const float MAX_SPEED;
 
-
-//debug
-extern char received;
 #endif	/* GLOBALS_H */
 

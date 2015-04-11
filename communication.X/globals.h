@@ -13,9 +13,5 @@ extern const long PROC_FCY;
 extern const int BAUDRATE;
 extern const int BRGVAL;
 
-//debug
-extern char received;
-extern char sent;
-
 #endif	/* GLOBALS_H */
 
