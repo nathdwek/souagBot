@@ -3,8 +3,10 @@
 #include "globals.h"
 #include "decision.h"
 
-unsigned char receiverState;
-unsigned char param;
+char receiverState;
+//0:Attend le début d'une nouvelle commande (0b11----00)
+//1:Attend la fin d'une commande en cours (0b..----00)
+unsigned char param;//Unsigned pour pouvoir faire des bitshifts en paix
 
 void initUart(void){
     //Config Générale
