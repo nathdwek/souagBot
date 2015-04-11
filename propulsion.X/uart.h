@@ -10,5 +10,8 @@
 
 void initUart(void);
 
+//dbg
+void handleReceived(char received);
+
 #endif	/* UART_H */
 

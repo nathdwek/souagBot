@@ -42,8 +42,8 @@ void initUart(void){
     RPOR5bits.RP11R = 0b00011;//RP11 est lié à U1TX
 
     //Start uart et ses composants
-    U1MODEbits.UARTEN = 1;//Active l'uart 1
-    U1STAbits.UTXEN = 1;//UART prend le controle des ports
+    U1MODEbits.UARTEN = 0;//Active l'uart 1
+    U1STAbits.UTXEN = 0;//UART prend le controle des ports
 
     //Initialise le receiver software
     receiverState = 0x00;
