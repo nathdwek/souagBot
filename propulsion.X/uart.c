@@ -49,7 +49,7 @@ void initUart(void){
     receiverState = 0x00;
 }
 
-char askrepeat(){
+char askRepeat(){
     if (U1STAbits.UTXBF == 0){
         U1TXREG = 0b00000001;
     }else{
@@ -63,13 +63,15 @@ char handleParam1(char received){
         param = (received && 0b00111100)*4;
         return 0x01;
     }else{
-        return askrepeat();
+        return askRepeat();
     }
 }
 
 char handleParam2(char received){
-    if (receiverState == 0x00){
-        return askrepeat();
+//Le char reçu semble contenir la deuxième partie du paramètre et la commande.
+    if (receiverState == 0){
+    //Erreur, on a jamais reçu de première partie
+        return askRepeat();
     }else{
         param = param + (received && 0b00111100)/4;
         unsigned char command = (received && 0b11000000)/64;
@@ -86,7 +88,7 @@ void handleReceived(char received){
             receiverState = handleParam2(received);
         }
     }else{
-        receiverState = askrepeat();
+        receiverState = askRepeat();
     }
 }
 
