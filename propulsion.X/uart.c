@@ -113,5 +113,8 @@ void _ISR _U1RXInterrupt(void){
     //Check erreur de parité ou de formattage
         char received = U1RXREG;
         handleReceived(received);
+    }else{
+        char garbage = U1RXREG;
+        receiverState = askRepeat();
     }
 }
