@@ -43,6 +43,7 @@ void initUart(void){
     RPOR5bits.RP11R = 0b00011;//RP11 est lié à U1TX
 
     //Start uart et ses composants
+    //Si les valeurs sont 0 c'est probablement du debug
     U1MODEbits.UARTEN = 0;//Active l'uart 1
     U1STAbits.UTXEN = 0;//UART prend le controle des ports
 
