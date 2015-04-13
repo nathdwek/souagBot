@@ -13,8 +13,6 @@
 extern const int BRGVAL;
 
 extern const int REGUL_FCY;
-extern const float MAIN_KP;
-extern const float PERTURB_KP;
 extern const float CM_PER_TICK;
 extern const float ACCELERATION;
 extern const float ANGULAR_ACCELERATION;
