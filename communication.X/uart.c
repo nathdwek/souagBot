@@ -2,6 +2,9 @@
 
 #include "globals.h"
 
+int command;
+char senderState;
+
 void initUart(void){
     //Config Générale
     U1MODEbits.USIDL = 0;//uart fonctionne quand uC
@@ -40,9 +43,21 @@ void initUart(void){
     U1STAbits.UTXEN = 1;//UART prend le controle des ports
 }
 
+void repeatCommand(void){
+    senderState = 0;    
+}
+
+void handleReceived(char received){
+    if (received == 1){
+    //askRepeat effectué côté propulsion
+        repeatCommand();
+    }//nothing else so far
+}
+
 void _ISR _U1RXInterrupt(void){
     IFS0bits.U1RXIF = 0;
     if ((U1STAbits.PERR || U1STAbits.FERR )== 0 ){
-        received = U1RXREG;
-    }
+        char received = U1RXREG;
+        handleReceived(received);
+    }//askRepeat ici aussi?
 }
