@@ -11,9 +11,11 @@
 #define PROC_FCY 40000000
 
 extern const int BRGVAL;
-
 extern const int REGUL_FCY;
 extern const float CM_PER_TICK;
+
+#define DECELERATION_DISTANCE 10 //cm
+
 extern const float ACCELERATION;
 extern const float ANGULAR_ACCELERATION;
 extern const float MAX_ANGULAR_SPEED;

@@ -8,7 +8,7 @@
 #ifndef DECISION_H
 #define	DECISION_H
 
-extern char accelerating;
+extern float acceleration;
 extern char acceleratingAngular;
 extern char goalDistance;
 extern float goalTheta;

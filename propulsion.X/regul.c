@@ -27,11 +27,10 @@ void configRegul(){
     resetStateVariables();
 }
 
-void accelerate(float* speed, float acceleration,
-                char* accelerating, float maxSpeed){
-    *speed = *speed+(*accelerating)*(acceleration)/REGUL_FCY;
-    if (fabs(*speed) > maxSpeed && sgn(*accelerating) == sgn(goalDistance)){
-        *accelerating = 0;
+void accelerate(float* speed, float* acceleration, float maxSpeed){
+    *speed = *speed+(*acceleration)/REGUL_FCY;
+    if (fabs(*speed) > maxSpeed && sgn(*acceleration) == sgn(goalDistance)){
+        *acceleration = 0;
     }
 }
 
@@ -39,10 +38,9 @@ void accelerate(float* speed, float acceleration,
 void updateConsignes(void){
     distanceConsigne = distanceConsigne + speedConsigne/REGUL_FCY;
     thetaConsigne = thetaConsigne + angularSpeedConsigne/REGUL_FCY;
-    accelerate(&speedConsigne, ACCELERATION,
-               &accelerating, MAX_SPEED);
-    accelerate(&angularSpeedConsigne, ANGULAR_ACCELERATION,
-               &acceleratingAngular, MAX_ANGULAR_SPEED);
+    accelerate(&speedConsigne, &acceleration, MAX_SPEED);
+    //accelerate(&angularSpeedConsigne, ANGULAR_ACCELERATION,
+               //&acceleratingAngular, MAX_ANGULAR_SPEED);
 }
 
 void setPWMs(float distance){
@@ -61,11 +59,12 @@ void setPWMs(float distance){
 
 void checkTerminalConditions(){
     if (goingStraight == 1){
-        if (fabs(sgn(goalDistance)*(goalDistance-distanceConsigne) - 16) < 1){
-            accelerating = -sgn(goalDistance);
+        if (fabs(sgn(goalDistance)*(goalDistance-distanceConsigne)
+                 - DECELERATION_DISTANCE) < 1){
+            acceleration = -sgn(goalDistance)*speedConsigne*speedConsigne/(goalDistance*2);
         }
         else if (fabs(goalDistance - distanceConsigne) < 1){
-            accelerating = 0.0;
+            acceleration = 0.0;
             speedConsigne = 0.0;
         }
     }
