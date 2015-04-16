@@ -7,10 +7,11 @@
 
 //Persistantes qui définissent l'état du robot
 float acceleration;
-char acceleratingAngular;
+float angularAcceleration;
 char goalDistance;
 char decelerationDistance;
 float goalTheta;
+float decelerationTheta;
 char goingStraight;
 char rotating;
 
@@ -19,12 +20,13 @@ void resetStateVariables(){
     angularSpeedConsigne = 0;
     goalDistance = 0;
     acceleration = 0;
-    acceleratingAngular = 0;
+    angularAcceleration = 0;
     kp = 0.00006;
     angularKp = 0.0001;
     distanceConsigne = 0;
     decelerationDistance = DFLT_DECELERATION_DST;
     thetaConsigne = 0;
+    decelerationTheta = DFLT_DECELERATION_THETA;
     goingStraight = 0;
     rotating = 0;
 }
@@ -41,22 +43,21 @@ void straight(char newGoalDistance){
     angularKp = 0.2;
     acceleration = sgn(newGoalDistance)*ACCELERATION;
     goalDistance = newGoalDistance;
-    decelerationDistance = goalDistance/3;
-    if (decelerationDistance > DFLT_DECELERATION_DST){
-        decelerationDistance = DFLT_DECELERATION_DST;
+    if (decelerationDistance > goalDistance/3){
+        decelerationDistance = goalDistance/3;
     }
     goingStraight = 1;
 }
 
-void rotate(char angleInDegrees, char way){
+void rotate(unsigned char angleInDegrees, char sgn){
     stop();
-    int signedAngleInDegrees = angleInDegrees * way;
-    float angleInRadians = signedAngleInDegrees;
-    angleInRadians = angleInRadians*3.141592/180.0;
     kp = 0.00006;
-    angularKp = 0.005;
-    acceleratingAngular = way;
-    goalTheta  = angleInRadians;
+    angularKp = 0.05;
+    angularAcceleration = sgn*ANGULAR_ACCELERATION;
+    goalTheta = (3.141592/180.0 * (float)angleInDegrees * (float)sgn);
+    if(decelerationTheta > goalTheta/3){
+        decelerationTheta = goalTheta/3;
+    }
     rotating = 1;
 }
 

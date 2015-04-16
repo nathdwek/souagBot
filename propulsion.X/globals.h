@@ -14,7 +14,8 @@ extern const int BRGVAL;
 extern const int REGUL_FCY;
 extern const float CM_PER_TICK;
 
-#define DFLT_DECELERATION_DST 10 //cm
+#define DFLT_DECELERATION_DST 15 //cm
+#define DFLT_DECELERATION_THETA 1//radian
 
 extern const float ACCELERATION;
 extern const float ANGULAR_ACCELERATION;

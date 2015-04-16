@@ -39,8 +39,7 @@ void updateConsignes(void){
     distanceConsigne = distanceConsigne + speedConsigne/REGUL_FCY;
     thetaConsigne = thetaConsigne + angularSpeedConsigne/REGUL_FCY;
     accelerate(&speedConsigne, &acceleration, MAX_SPEED);
-    //accelerate(&angularSpeedConsigne, ANGULAR_ACCELERATION,
-               //&acceleratingAngular, MAX_ANGULAR_SPEED);
+    accelerate(&angularSpeedConsigne, &angularAcceleration, MAX_ANGULAR_SPEED);
 }
 
 void setPWMs(float distance){
@@ -69,11 +68,12 @@ void checkTerminalConditions(){
         }
     }
     else if (rotating == 1){
-        if (fabs(fsgn(goalTheta)*(goalTheta-thetaConsigne) - 1.5) < 0.05){
-            acceleratingAngular = -fsgn(goalTheta);
+        if (fabs(fsgn(goalTheta)*(goalTheta-thetaConsigne)
+                 - decelerationTheta) < 0.05){
+            angularAcceleration = -fsgn(goalTheta)*angularSpeedConsigne*angularSpeedConsigne/(decelerationTheta*2);
         }
         else if (fabs(goalTheta - thetaConsigne) < 0.05){
-            acceleratingAngular = 0.0;
+            angularAcceleration = 0.0;
             angularSpeedConsigne = 0.0;
         }
     }

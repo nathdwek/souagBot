@@ -9,10 +9,11 @@
 #define	DECISION_H
 
 extern float acceleration;
-extern char acceleratingAngular;
+extern float angularAcceleration;
 extern char goalDistance;
 extern char decelerationDistance;
 extern float goalTheta;
+extern float decelerationTheta;
 extern char goingStraight;
 extern char rotating;
 
