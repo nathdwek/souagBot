@@ -11,6 +11,7 @@
 extern float acceleration;
 extern char acceleratingAngular;
 extern char goalDistance;
+extern char decelerationDistance;
 extern float goalTheta;
 extern char goingStraight;
 extern char rotating;

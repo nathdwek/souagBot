@@ -60,8 +60,8 @@ void setPWMs(float distance){
 void checkTerminalConditions(){
     if (goingStraight == 1){
         if (fabs(sgn(goalDistance)*(goalDistance-distanceConsigne)
-                 - DFLT_DECELERATION_DST) < 1){
-            acceleration = -sgn(goalDistance)*speedConsigne*speedConsigne/(goalDistance*2);
+                 - decelerationDistance) < 1){
+            acceleration = -sgn(goalDistance)*speedConsigne*speedConsigne/(decelerationDistance*2);
         }
         else if (fabs(goalDistance - distanceConsigne) < 1){
             acceleration = 0.0;

@@ -18,8 +18,7 @@ int main() {
     configQEI();
     configRegul();
     initUart();
-    handleReceived(0b11000100);
-    handleReceived(0b00000000);
+    straight(20);
     while(1){
     }
 }

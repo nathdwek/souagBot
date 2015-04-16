@@ -9,6 +9,7 @@
 float acceleration;
 char acceleratingAngular;
 char goalDistance;
+char decelerationDistance;
 float goalTheta;
 char goingStraight;
 char rotating;
@@ -22,6 +23,7 @@ void resetStateVariables(){
     kp = 0.00006;
     angularKp = 0.0001;
     distanceConsigne = 0;
+    decelerationDistance = DFLT_DECELERATION_DST;
     thetaConsigne = 0;
     goingStraight = 0;
     rotating = 0;
@@ -39,6 +41,10 @@ void straight(char newGoalDistance){
     angularKp = 0.2;
     acceleration = sgn(newGoalDistance)*ACCELERATION;
     goalDistance = newGoalDistance;
+    decelerationDistance = goalDistance/3;
+    if (decelerationDistance > DFLT_DECELERATION_DST){
+        decelerationDistance = DFLT_DECELERATION_DST;
+    }
     goingStraight = 1;
 }
 
