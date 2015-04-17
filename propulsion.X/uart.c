@@ -44,8 +44,8 @@ void initUart(void){
 
     //Start uart et ses composants
     //Si les valeurs sont 0 c'est probablement du debug
-    U1MODEbits.UARTEN = 0;//Active l'uart 1
-    U1STAbits.UTXEN = 0;//UART prend le controle des ports
+    U1MODEbits.UARTEN = 1;//Active l'uart 1
+    U1STAbits.UTXEN = 1;//UART prend le controle des ports
 
     //Initialise le receiver software
     receiverState = 0;
@@ -55,8 +55,6 @@ char askRepeat(){
 //Il y a eu une erreur. Demande de répéter une commande entière et état=>0.
     if (U1STAbits.UTXBF == 0){
         U1TXREG = 0b00000001;
-    }else{
-        //HOPE.LIKE.HELL.
     }
     return 0;
 }

@@ -15,7 +15,8 @@ void initUart(void){
                           //=>Donc on s'en fout de RTSMD
     U1MODEbits.LPBACK = 0;//0:inter uC. 1: test uC vers lui même.
     U1MODEbits.ABAUD = 0;//Auto Baud off.
-    U1MODEbits.BRGH = 0;//Standard speed mode
+    U1MODEbits.BRGH = 1;//Standard speed mode
+    //Plus robuste et de toute façon on a un baudrate ridicule.
     U1BRG = BRGVAL;//Fixe le baud rate par la longueur du timer lié
     U1MODEbits.PDSEL = 0b01;//8bit data, bit de parité (paire)
     U1MODEbits.STSEL = 0;//1 stop bit.
@@ -43,14 +44,21 @@ void initUart(void){
     U1STAbits.UTXEN = 1;//UART prend le controle des ports
 }
 
-void repeatCommand(void){
-    senderState = 0;    
+void sendCommand(void){
+    IEC0bits.U1TXIE = 1;
+    if (U1STAbits.UTXBF == 0){
+        senderState = 1;
+        char part1 = (command & 0b0000000011110000)/4 + 0b11000000;
+        U1TXREG = part1;
+    }else{
+        senderState = 0;
+    }
 }
 
 void handleReceived(char received){
     if (received == 1){
     //askRepeat effectué côté propulsion
-        repeatCommand();
+        sendCommand();
     }//nothing else so far
 }
 
@@ -60,4 +68,18 @@ void _ISR _U1RXInterrupt(void){
         char received = U1RXREG;
         handleReceived(received);
     }//askRepeat ici aussi?
+}
+
+void _ISR _U1TXInterrupt(void){
+    IFS0bits.U1TXIF = 0;
+    if (senderState == 0){
+        char part1 = (command & 0b0000000011110000)/4 + 0b11000000;
+        U1TXREG = part1;
+        senderState = 1;
+    }else{
+        char part2 = (command & 0b0000000000001111)*4
+                 +(command & 0b0000001100000000)/4;
+        U1TXREG = part2;
+        IEC0bits.U1TXIE = 0;
+    }
 }

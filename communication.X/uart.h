@@ -9,6 +9,10 @@
 #define	UART_H
 
 void initUart(void);
+void sendCommand(void);
+
+//dbg
+extern int command;
 
 #endif	/* UART_H */
 

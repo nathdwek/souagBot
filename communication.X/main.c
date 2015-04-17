@@ -7,24 +7,17 @@
 int main(void){
     init();
     initUart();
-    T1CONbits.TCKPS = 0b11;
-    PR1 = 65535;
-    IEC0bits.T1IE = 1;
-    T1CONbits.TON = 1;
+    T2CONbits.T32 = 1;
+    PR2 = 65000;
+    PR3 = 5000;
+    IEC0bits.T3IE = 1;
+    T2CONbits.TON = 1;
     while(1){
-        if(U1STAbits.OERR == 1){
-            char d = 'a';
-        }
     }
 }
 
-void _ISR _T1Interrupt(void){
-    IFS0bits.T1IF = 0;
-    if (U1STAbits.UTXBF == 0){
-        sent++;
-        if (sent ==  0b11111111){
-            sent=0b00000000;
-        }
-        U1TXREG = sent;
-    }
+void _ISR _T3Interrupt(void){
+    IFS0bits.T3IF = 0;
+    command = 0b0000000001100100;
+    sendCommand();
 }
