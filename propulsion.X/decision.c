@@ -1,5 +1,6 @@
 #include <p33FJ128MC804.h>
 
+#include "globals.h"
 #include "regul.h"
 #include "globals.h"
 #include "util.h"
@@ -54,7 +55,7 @@ void rotate(unsigned char angleInDegrees, char sgn){
     kp = 0.00006;
     angularKp = 0.05;
     angularAcceleration = sgn*ANGULAR_ACCELERATION;
-    goalTheta = (3.141592/180.0 * (float)angleInDegrees * (float)sgn);
+    goalTheta = (PI/180.0 * (float)angleInDegrees * (float)sgn);
     if(decelerationTheta > goalTheta/3){
         decelerationTheta = goalTheta/3;
     }

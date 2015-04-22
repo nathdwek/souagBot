@@ -7,11 +7,7 @@
 #include "filter.h"
 #include "filter.h"
 
-int main(void){
-    float sample;
-    int j = 0;
-    float result[1000];
-    
+int main(void){  
     init();
     initUart();
     initFilter();
@@ -20,17 +16,7 @@ int main(void){
     PR3 = 5000;
     IEC0bits.T3IE = 1;
     T2CONbits.TON = 1;
-    int wave[1000];
-    int i;
-    for (i = 0; i < 1000; i++){
-        sample = sin(2*3.14*900*i/27000);
-        wave[i] = 2000 * sample;
-    }
     while(1){
-        if (j<1000){
-            result[j] = filter(wave[j]);
-            j++;
-        }
     }
 }
 

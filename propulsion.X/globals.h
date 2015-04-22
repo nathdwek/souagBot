@@ -8,6 +8,8 @@
 #ifndef GLOBALS_H
 #define	GLOBALS_H
 
+#define PI 3.141592
+
 #define PROC_FCY 40000000
 
 extern const int BRGVAL;
