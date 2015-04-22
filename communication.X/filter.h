@@ -77,10 +77,10 @@ extern float Xx1_1100[sectionOrder], y1x2_1100[sectionOrder],
              y4Y_1100[sectionOrder];
 
 void initFilter();
-float * filterNewSample(float sample, float returnArray[2]);
+void filterNewSample(float sample, float returnArray[2]);
 
 //TEST
-int * generateSineInput(int length, float frequency, int returnArray[]);
+void generateSineInput(int length, float frequency, int returnArray[]);
 float rms(float array[],int arrayLength);
 
 #endif	/* FILTER_H */

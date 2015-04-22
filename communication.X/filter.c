@@ -109,7 +109,7 @@ float recurrence(float a1, float a2, float b1, float b2, float gain,
     return gain*(arrayX[0]+b1*arrayX[1]+b2*arrayX[2])-a1*arrayY[1]-a2*arrayY[2];
 }
 
-float * filterNewSample(float sample, float returnArray[2]){
+void filterNewSample(float sample, float returnArray[2]){
     shiftArrays();
     Xx1_900[0] = sample;
     y1x2_900[0] = recurrence(a900_11,a900_12,b900_11,b900_12,g900_1,Xx1_900,y1x2_900);
@@ -125,7 +125,6 @@ float * filterNewSample(float sample, float returnArray[2]){
 
     returnArray[0] = y4Y_900[0];
     returnArray[1] = y4Y_1100[0];
-    return returnArray;
 }
 
 //TEST
@@ -140,13 +139,12 @@ float rms(float array[],int arrayLength){
     return sqrtf(rms);
 }
 
-int * generateSineInput(int length,float frequency, int returnArray[]){
+void generateSineInput(int length,float frequency, int returnArray[]){
     int i;
     float sample;
     for (i=0;i<length;i++){
         sample = sin(2.0*PI*frequency*i/FS);
         returnArray[i] = 1000*sample;
     }
-    return returnArray;
 }
 
