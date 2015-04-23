@@ -5,7 +5,6 @@
 #include "uart.h"
 #include "math.h"
 #include "filter.h"
-#include "filter.h"
 
 int main(void){  
     init();
@@ -17,6 +16,7 @@ int main(void){
     IEC0bits.T3IE = 1;
     T2CONbits.TON = 1;
     while(1){
+
     }
 }
 

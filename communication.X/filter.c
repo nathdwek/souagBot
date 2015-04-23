@@ -147,4 +147,3 @@ void generateSineInput(int length,float frequency, int returnArray[]){
         returnArray[i] = 1000*sample;
     }
 }
-
