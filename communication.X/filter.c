@@ -2,6 +2,8 @@
 #include "filter.h"
 #include "math.h"//Remove for production
 
+#define sectionOrder 3 //n n-1 n-2
+
 //COEFFICIENTS DES FILTRES PB NUMERIQUES
 //Les filtres sont normalisés: ai0=bi0=1
 

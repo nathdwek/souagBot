@@ -12,6 +12,7 @@
 
 #define PI 3.141592
 #define FS 27000
+#define FSYMBOL 10;
 
 extern const int BAUDRATE;
 extern const int BRGVAL;
