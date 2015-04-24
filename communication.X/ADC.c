@@ -1,4 +1,4 @@
-
+#include <p33FJ128GP802.h>
 #include "ADC.h"
 
 void initADC(){
@@ -11,7 +11,4 @@ void initADC(){
     AD1CON1bits.ASAM = 1;
     AD1CON1bits.SSRC = 0b010;
     AD1CON1bits.FORM = 0;
-    
-
-
 }

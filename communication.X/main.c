@@ -10,18 +10,18 @@ int main(void){
     init();
     initUart();
     initFilter();
-    T2CONbits.T32 = 1;
-    PR2 = 65000;
-    PR3 = 5000;
-    IEC0bits.T3IE = 1;
-    T2CONbits.TON = 1;
+    T4CONbits.T32 = 1;
+    PR4 = 65000;
+    PR5 = 5000;
+    IEC1bits.T5IE = 1;
+    T4CONbits.TON = 1;
     while(1){
 
     }
 }
 
-void _ISR _T3Interrupt(void){
-    IFS0bits.T3IF = 0;
+void _ISR _T5Interrupt(void){
+    IFS1bits.T5IF = 0;
     command = 0b0000000001100100;
     sendCommand();
 }
