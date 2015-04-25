@@ -69,11 +69,17 @@ const float b1100_41 = 0;
 const float b1100_42 = -1;
 const float g1100_4 = 0.004583266011817110560655486040104733547;
 
+//X:entrée "générale"
+//Y:sortie "générale"
+//xi:entrée de la section i
+//yi:sortie de la section i
+//chaque vecteur est deux choses à la fois.
 float Xx1_1100[sectionOrder], y1x2_1100[sectionOrder], y2x3_1100[sectionOrder],
       y3x4_1100[sectionOrder], y4Y_1100[sectionOrder];
 
 
 void initFilter(void){
+    //Filtre causal
     int i;
     for (i = 0; i<sectionOrder;i++){
         Xx1_900[i] = 0;
@@ -89,7 +95,7 @@ void initFilter(void){
     }
 }
 
-void shiftArrays(void){
+void shiftArrays(void){//Explicite
     int i;
     for (i=0;i<2;i++){
         Xx1_900[2-i] = Xx1_900[1-i];
