@@ -105,6 +105,11 @@
         <property key="use-cci" value="false"/>
         <property key="use-iar" value="false"/>
       </C30>
+<<<<<<< Updated upstream
+=======
+      <C30-AR>
+      </C30-AR>
+>>>>>>> Stashed changes
       <C30-AS>
       </C30-AS>
       <C30-LD>
