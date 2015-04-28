@@ -36,7 +36,7 @@ const float b900_41 = 0;
 const float b900_42 = -1;
 const float g900_4 = 0.003752830012794396152830955770696164109;
 
-float Xx1_900[sectionOrder], y1x2_900[sectionOrder], y2x3_900[sectionOrder],
+float y1x2_900[sectionOrder], y2x3_900[sectionOrder],
       y3x4_900[sectionOrder], y4Y_900[sectionOrder];
 
 
@@ -74,20 +74,21 @@ const float g1100_4 = 0.004583266011817110560655486040104733547;
 //xi:entrée de la section i
 //yi:sortie de la section i
 //chaque vecteur est deux choses à la fois.
-float Xx1_1100[sectionOrder], y1x2_1100[sectionOrder], y2x3_1100[sectionOrder],
+float y1x2_1100[sectionOrder], y2x3_1100[sectionOrder],
       y3x4_1100[sectionOrder], y4Y_1100[sectionOrder];
+
+float Xx1[sectionOrder];//l'entrée est la même pour les 2 filtres
 
 
 void initFilter(void){
     //Filtre causal
     int i;
     for (i = 0; i<sectionOrder;i++){
-        Xx1_900[i] = 0;
+        Xx1[i] = 0;
         y1x2_900[i] = 0;
         y2x3_900[i] = 0;
         y3x4_900[i] = 0;
         y4Y_900[i] = 0;
-        Xx1_1100[i] = 0;
         y1x2_1100[i] = 0;
         y2x3_1100[i] = 0;
         y3x4_1100[i] = 0;
@@ -98,12 +99,14 @@ void initFilter(void){
 void shiftArrays(void){//Explicite
     int i;
     for (i=0;i<2;i++){
-        Xx1_900[2-i] = Xx1_900[1-i];
+
+        Xx1[2-i] = Xx1[1-i];
+        
         y1x2_900[2-i] = y1x2_900[1-i];
         y2x3_900[2-i] = y2x3_900[1-i];
         y3x4_900[2-i] = y3x4_900[1-i];
         y4Y_900[2-i] = y4Y_900[1-i];
-        Xx1_1100[2-i] = Xx1_1100[1-i];
+
         y1x2_1100[2-i] = y1x2_1100[1-i];
         y2x3_1100[2-i] = y2x3_1100[1-i];
         y3x4_1100[2-i] = y3x4_1100[1-i];
@@ -111,25 +114,26 @@ void shiftArrays(void){//Explicite
     }
 }
 
-float recurrence(float a1, float a2, float b1, float b2, float gain,
+float recurrence(float a1, float a2, float gain,
                  float arrayX[3], float arrayY[3]){
     //Recurrence ordre 2 normalisée
-    return gain*(arrayX[0]+b1*arrayX[1]+b2*arrayX[2])-a1*arrayY[1]-a2*arrayY[2];
+    //Opti: b1 et b2 sont toujours (0,1)
+    return gain*(arrayX[0]-arrayX[2])-a1*arrayY[1]-a2*arrayY[2];
 }
 
-void filterNewSample(float sample, float returnArray[2]){
+void filterNewSample(unsigned int sample, float returnArray[2]){
     shiftArrays();
-    Xx1_900[0] = sample;
-    y1x2_900[0] = recurrence(a900_11,a900_12,b900_11,b900_12,g900_1,Xx1_900,y1x2_900);
-    y2x3_900[0] = recurrence(a900_21,a900_22,b900_21,b900_22,g900_2,y1x2_900,y2x3_900);
-    y3x4_900[0] = recurrence(a900_31,a900_32,b900_31,b900_32,g900_3,y1x2_900,y2x3_900);
-    y4Y_900[0] = recurrence(a900_41,a900_42,b900_41,b900_42,g900_4,y3x4_900,y4Y_900);
+    Xx1[0] = sample;
+    
+    y1x2_900[0] = recurrence(a900_11,a900_12,g900_1,Xx1,y1x2_900);
+    y2x3_900[0] = recurrence(a900_21,a900_22,g900_2,y1x2_900,y2x3_900);
+    y3x4_900[0] = recurrence(a900_31,a900_32,g900_3,y1x2_900,y2x3_900);
+    y4Y_900[0] = recurrence(a900_41,a900_42,g900_4,y3x4_900,y4Y_900);
 
-    Xx1_1100[0] = sample;
-    y1x2_1100[0] = recurrence(a1100_11,a1100_12,b1100_11,b1100_12,g1100_1,Xx1_1100,y1x2_1100);
-    y2x3_1100[0] = recurrence(a1100_21,a1100_22,b1100_21,b1100_22,g1100_2,y1x2_1100,y2x3_1100);
-    y3x4_1100[0] = recurrence(a1100_31,a1100_32,b900_31,b1100_32,g1100_3,y1x2_1100,y2x3_1100);
-    y4Y_1100[0] = recurrence(a1100_41,a1100_42,b1100_41,b1100_42,g1100_4,y3x4_1100,y4Y_1100);
+    y1x2_1100[0] = recurrence(a1100_11,a1100_12,g1100_1,Xx1,y1x2_1100);
+    y2x3_1100[0] = recurrence(a1100_21,a1100_22,g1100_2,y1x2_1100,y2x3_1100);
+    y3x4_1100[0] = recurrence(a1100_31,a1100_32,g1100_3,y1x2_1100,y2x3_1100);
+    y4Y_1100[0] = recurrence(a1100_41,a1100_42,g1100_4,y3x4_1100,y4Y_1100);
 
     returnArray[0] = y4Y_900[0];
     returnArray[1] = y4Y_1100[0];

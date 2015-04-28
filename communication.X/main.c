@@ -5,16 +5,20 @@
 #include "uart.h"
 #include "math.h"
 #include "filter.h"
+#include "ADC.h"
 
 int main(void){  
     init();
     initUart();
     initFilter();
+    initADC();
+    
     T4CONbits.T32 = 1;
     PR4 = 65000;
     PR5 = 5000;
     IEC1bits.T5IE = 1;
-    T4CONbits.TON = 1;
+    T4CONbits.TON = 0;
+
     while(1){
 
     }
