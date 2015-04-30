@@ -4,8 +4,8 @@
 
 
 int sampleNo;
-float rmsValue_900;
-float rmsValue_1100;
+long rmsValue_900;
+long rmsValue_1100;
 char bitEnded;
 const int samplesPerBit = FS/FSYMBOL;
 
@@ -15,7 +15,7 @@ void initRmsDetector(){
     rmsValue_1100 = 0;
 }
 
-char rmsDetect(float filteredSample[2],char detected[2]){
+char rmsDetect(long filteredSample[2],char detected[2]){
     sampleNo++;
     rmsValue_900 += filteredSample[0]*filteredSample[0];
     rmsValue_1100 += filteredSample[1]*filteredSample[1];
@@ -25,8 +25,17 @@ char rmsDetect(float filteredSample[2],char detected[2]){
         rmsValue_900 /= samplesPerBit;
         rmsValue_1100 /= samplesPerBit;
         bitEnded = 1;
-        detected[0] = rmsValue_900 > MIN_RMS_VALUE;
-        detected[1] = rmsValue_1100 > MIN_RMS_VALUE;
+        
+        if (rmsValue_900 > MIN_RMS_VALUE){
+            detected[0] = 1;
+        }else{
+            detected[0] = 0;
+        }
+        if (rmsValue_1100 > MIN_RMS_VALUE){
+            detected[1] = 1;
+        }else{
+            detected[1] = 0;
+        }
     }
     return bitEnded;
 }

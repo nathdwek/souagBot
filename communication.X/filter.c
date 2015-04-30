@@ -17,12 +17,14 @@ const int g900_1 = 288;
 
 //Filtre centré autour de 1100
 //Section 1
-const int a1100_11 = -1.9214630300586288;
-const int a1100_12 =   0.98613394404400612;
+const int a1100_11 = -19215;
+const int a1100_12 = 9861;
 const int b1100_11 = 0;
-const int b1100_12 = -1;
-const int g1100_1 = 0.0035086053248721146;
-const int outGain_1100 = 1.9760067992969408;
+const int b1100_12 = -10000;
+const int g1100_1 = 351;
+
+const int equalizer_900 = 3;
+const int equalizer_1100 = 4;
 
 //X:entrée "générale"
 //Y:sortie "générale"
@@ -46,33 +48,31 @@ void initFilter(void){
 void shiftArrays(void){//Explicite
     int i;
     for (i=0;i<2;i++){
-
         x[2-i] = x[1-i];
         
         y_900[2-i] = y_900[1-i];
-
         y_1100[2-i] = y_1100[1-i];
     }
 }
 
-float recurrence(float a1, float a2, float gain,
-                 float arrayX[3], float arrayY[3]){
+long recurrence(long a1, long a2, long gain,
+                 int arrayX[3], long arrayY[3]){
     //Recurrence ordre 2 normalisée
     //Opti: b1 et b2 sont toujours (0,1)
-    return gain*(arrayX[0]-arrayX[2])-a1*arrayY[1]-a2*arrayY[2];
+    return (gain*(arrayX[0]-arrayX[2])-a1*arrayY[1]-a2*arrayY[2])/10000;
 }
 
-void filterNewSample(unsigned int sample, int returnArray[2]){
+void filterNewSample(unsigned int sample, long returnArray[2]){
     shiftArrays();
 
     x[0] = sample;
     
-    y_900[0] = (g900_1*(x[0]-x[2])-a900_11*y_900[1]-a900_12*y_900[2])/10000;
+    y_900[0] = recurrence(a900_11,a900_12,g900_1,x,y_900);
 
-    y_1100[0] = (g900_1*(x[0]-x[2])-a900_11*y_900[1]-a900_12*y_900[2])/10000;
+    y_1100[0] = recurrence(a1100_11,a1100_12,g1100_1,x,y_1100);
     
-    returnArray[0] = y_900[0];
-    returnArray[1] = y_1100[0];
+    returnArray[0] = y_900[0]/equalizer_900;
+    returnArray[1] = y_1100[0]/equalizer_1100;
 }
 
 //TEST

@@ -8,9 +8,10 @@
 #ifndef RMSDETECTOR_H
 #define	RMSDETECTOR_H
 
-#define MIN_RMS_VALUE 300.0;
+#define MIN_RMS_VALUE 270
 
 void initRmsDetector();
+char rmsDetect(long filteredSample[2],char detected[2]);
 
 
 #endif	/* RMSDETECTOR_H */
