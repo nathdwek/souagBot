@@ -4,8 +4,8 @@
 #include "globals.h"
 
 int j = 0;
-float filterBuffer[100];
-float  filteredReads[2];
+int filterBuffer[100];
+int  filteredReads[2];
 
 void initADC(){
     AD1CON2bits.VCFG = 0b100;//On a pas de référence de tension extérieure.
@@ -35,8 +35,7 @@ void initADC(){
 
 void _ISR _ADC1Interrupt(void){
     IFS0bits.AD1IF = 0;
-    unsigned int read  = ADC1BUF0;
-    filterNewSample(read, filteredReads);
+    filterNewSample(ADC1BUF0, filteredReads);
     filterBuffer[j] = filteredReads[1];
     j++;
     if (j==100){
