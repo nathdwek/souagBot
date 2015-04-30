@@ -7,6 +7,13 @@
 #include "filter.h"
 #include "ADC.h"
 
+int l;
+int m;
+float sinus;
+unsigned int input;
+float filterOut1[2];
+float filterBuffer1[100];
+
 int main(void){  
     init();
     initUart();
@@ -20,6 +27,18 @@ int main(void){
     T4CONbits.TON = 0;
 
     while(1){
+        sinus = sin(2*PI*900*l/FS);
+        input = 500*sinus + 500;
+        filterNewSample(input,filterOut1);
+        filterBuffer[m] = filterOut1[0];
+        l++;
+        m++;
+        if (l == 10000){
+            l = 0;
+        }
+        if (m == 100){
+            m = 0;
+        }
 
     }
 }
