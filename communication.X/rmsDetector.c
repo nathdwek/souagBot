@@ -8,6 +8,7 @@ long rmsValue_900;
 long rmsValue_1100;
 char bitEnded;
 const int samplesPerBit = FS/FSYMBOL;
+const long minValue =1766000;
 
 void initRmsDetector(){
     sampleNo = 0;
@@ -22,11 +23,8 @@ char rmsDetect(long filteredSample[2],char detected[2]){
     if (sampleNo < samplesPerBit){
         bitEnded = 0;
     }else{
-        rmsValue_900 /= samplesPerBit;
-        rmsValue_1100 /= samplesPerBit;
-        bitEnded = 1;
-        
-        if (rmsValue_900 > MIN_RMS_VALUE){
+        bitEnded = 1;        
+        if (rmsValue_900 > minValue){
             detected[0] = 1;
         }else{
             detected[0] = 0;

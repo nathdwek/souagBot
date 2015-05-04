@@ -8,6 +8,8 @@
 
 long filterOutput[2];
 char bitDetected[2];
+//long filterBuffer[100];
+//int j = 0;
 
 void initADC(){
     AD1CON2bits.VCFG = 0b100;//On a pas de référence de tension extérieure.

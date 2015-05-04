@@ -17,14 +17,11 @@ const int g900_1 = 288;
 
 //Filtre centré autour de 1100
 //Section 1
-const int a1100_11 = -19215;
-const int a1100_12 = 9861;
-const int b1100_11 = 0;
-const int b1100_12 = -10000;
-const int g1100_1 = 351;
-
-const int equalizer_900 = 3;
-const int equalizer_1100 = 4;
+const int a1100_11 = -19215;//*3/4;
+const int a1100_12 = 9861;//*3/4;
+const int b1100_11 = 0;//*3/4;
+const int b1100_12 = -10000;//*3/4;
+const int g1100_1 = 351;//*3/4;
 
 //X:entrée "générale"
 //Y:sortie "générale"
@@ -71,8 +68,8 @@ void filterNewSample(unsigned int sample, long returnArray[2]){
 
     y_1100[0] = recurrence(a1100_11,a1100_12,g1100_1,x,y_1100);
     
-    returnArray[0] = y_900[0]/equalizer_900;
-    returnArray[1] = y_1100[0]/equalizer_1100;
+    returnArray[0] = y_900[0];
+    returnArray[1] = y_1100[0];
 }
 
 //TEST
