@@ -8,7 +8,7 @@
 #ifndef FILTER_H
 #define	FILTER_H
 void initFilter();
-void filterNewSample(unsigned int sample, long returnArray[2]);
+void filterNewSample(unsigned int sample, int returnArray[2]);
 
 //TEST
 void generateSineInput(int length, float frequency, int returnArray[]);

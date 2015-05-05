@@ -8,7 +8,7 @@ long rmsValue_900;
 long rmsValue_1100;
 char bitEnded;
 const int samplesPerBit = FS/FSYMBOL;
-const long minValue =1766000;
+const long minValue =1566000;
 
 void initRmsDetector(){
     sampleNo = 0;

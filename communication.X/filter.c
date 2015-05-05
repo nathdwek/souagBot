@@ -59,7 +59,7 @@ long recurrence(long a1, long a2, long gain,
     return (gain*(arrayX[0]-arrayX[2])-a1*arrayY[1]-a2*arrayY[2])/10000;
 }
 
-void filterNewSample(unsigned int sample, long returnArray[2]){
+void filterNewSample(unsigned int sample, int returnArray[2]){
     shiftArrays();
 
     x[0] = sample;

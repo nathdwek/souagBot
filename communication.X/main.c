@@ -10,9 +10,10 @@
 int l;
 int m;
 float sinus;
-unsigned int input;
+long input[2];
 float filterOut1[2];
 float filterBuffer1[100];
+char detected[2];
 
 int main(void){
     init();
@@ -28,7 +29,9 @@ int main(void){
 
     while(1){
 //        sinus = sin(2*PI*900*l/FS);
-//        input = 500*sinus + 500;
+//        input[0] = 1850*sinus;
+//        sinus = sin(2*PI*1100*l/FS);
+//        input[1] = 50*sinus;
 //        filterNewSample(input,filterOut1);
 //        filterBuffer1[m] = filterOut1[0];
 //        l++;

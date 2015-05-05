@@ -1,15 +1,11 @@
 #include <p33FJ128GP802.h>
 #include "ADC.h"
 #include "filter.h"
-
-
-#include "rmsDetector.h"
+#include "peakDetector.h"
 #include "globals.h"
 
-long filterOutput[2];
-char bitDetected[2];
-//long filterBuffer[100];
-//int j = 0;
+int filterOutput[2];
+char peakDetected;
 
 void initADC(){
     AD1CON2bits.VCFG = 0b100;//On a pas de référence de tension extérieure.
@@ -40,8 +36,9 @@ void initADC(){
 void _ISR _ADC1Interrupt(void){
     IFS0bits.AD1IF = 0;
     filterNewSample(ADC1BUF0, filterOutput);
-    if (rmsDetect(filterOutput,bitDetected) == 1){
-        char a = bitDetected[0];
-    }
+//    if (rmsDetect(filterOutput,bitDetected) == 1){
+//
+//    }
+    peakDetected = peakDetect(filterOutput);
     LATAbits.LATA0 = !LATAbits.LATA0;
 }
