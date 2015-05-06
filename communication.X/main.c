@@ -7,14 +7,6 @@
 #include "filter.h"
 #include "ADC.h"
 
-int l;
-int m;
-float sinus;
-long input[2];
-float filterOut1[2];
-float filterBuffer1[100];
-char detected[2];
-
 int main(void){
     init();
     initUart();

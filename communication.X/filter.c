@@ -9,19 +9,19 @@
 
 //Filtre centré autour de 900
 //Section 1
-const int a900_11 = -19427;
-const int a900_12 =   9861;
+const int a900_11 = -19027;
+const int a900_12 = 9813;
 const int b900_11 = 0;
 const int b900_12 = -10000;
-const int g900_1 = 288;
+const int g900_1 = 93;
 
 //Filtre centré autour de 1100
 //Section 1
-const int a1100_11 = -19215;//*3/4;
-const int a1100_12 = 9861;//*3/4;
+const int a1100_11 = -18642;//*3/4;
+const int a1100_12 = 9813;//*3/4;
 const int b1100_11 = 0;//*3/4;
 const int b1100_12 = -10000;//*3/4;
-const int g1100_1 = 351;//*3/4;
+const int g1100_1 = 93;//*3/4;
 
 //X:entrée "générale"
 //Y:sortie "générale"

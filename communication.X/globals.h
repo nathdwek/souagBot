@@ -11,7 +11,7 @@
 #define PROC_FCY 40000000
 
 #define PI 3.141592
-#define FS 27000
+#define FS 20000
 #define FSYMBOL 10
 
 extern const int BAUDRATE;

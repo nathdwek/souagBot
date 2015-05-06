@@ -19,8 +19,8 @@ int iter1100;
 int max900;
 int max1100;
 
-int minValue900 = 250;
-int minValue1100 = 250;
+int minValue900 = 135;
+int minValue1100 = 135;
 
 char detected900;
 char detected1100;
@@ -52,7 +52,7 @@ int searchNewMax(int filterBuffer[], int size){
     return currentMax;
 }
 
-char peakDetectOneFreq(int * filterBuffer, int * iter, int * max, int input,
+char peakDetectOneFreq(int filterBuffer[], int * iter, int * max, int input,
                        int maxIter, int minValue){
     if ((filterBuffer[*iter] == *max) && (input < filterBuffer[*iter])){
         filterBuffer[*iter] = input;

@@ -33,6 +33,9 @@ void initADC(){
     AD1CON1bits.ADON = 1;//Lance l'adc
     TRISAbits.TRISA0 = 0;
     LATAbits.LATA0 = 1;
+
+    //DBG
+    TRISBbits.TRISB9 = 0;
 }
 
 
@@ -40,7 +43,12 @@ void _ISR _ADC1Interrupt(void){
     IFS0bits.AD1IF = 0;
     filterNewSample(ADC1BUF0, filterOutput);
     peakDetected = peakDetect(filterOutput);
-    char a = peakDetected;
+    if ((peakDetected & 2) == 2){
+        LATBbits.LATB9 = 1;
+    }else{
+        LATBbits.LATB9 = 0;
+    }
+
     fskOutput = fskDetector(peakDetected & 1, (peakDetected & 2)/2);
     if (fskOutput != 0){
         command = fskOutput;
