@@ -6,17 +6,21 @@
  */
 #include "globals.h"
 
-long filterBuffer900[];
-long filterBuffer1100[];
+#define maxIter900 30
+#define maxIter1100 25
+
+
+int filterBuffer900[maxIter900];
+int filterBuffer1100[maxIter1100];
 
 int iter900;
 int iter1100;
 
-int maxIter900;
-int maxIter1100;
+int max900;
+int max1100;
 
-long max900;
-long max1100;
+int minValue900 = 250;
+int minValue1100 = 250;
 
 char detected900;
 char detected1100;
@@ -24,19 +28,23 @@ char detected1100;
 void initPeakDetector(){
     max900 = 0;
     max1100 = 0;
-    maxIter900 = FS/900;
-    maxIter1100 = FS/1100;
+
+    iter900 = 0;
+    iter1100 = 0;
+
+    int i;
+    for (i = 0; i< maxIter900; i++){
+        filterBuffer900[i] = 0;
+    }
+    for (i = 0; i< maxIter1100; i++){
+        filterBuffer1100[i] = 0;
+    }
 }
 
-char peakDetect(long input[2]){
-    detected900 = peakDetectOneFreq(filterBuffer900, &iter900, &max900, input, maxIter900);
-    detected1100 = peakDetectOneFreq(filterBuffer1100, &iter1100, &max1100, input, maxIter1100);
-}
-
-long searchNewMax(long filterBuffer[], int size){
-    int i = 0;
-    long currentMax = 0;
-    for (i;i<size;i++){
+int searchNewMax(int filterBuffer[], int size){
+    int i;
+    int currentMax = 0;
+    for (i = 0;i<size;i++){
         if (filterBuffer[i] > currentMax){
             currentMax = filterBuffer[i];
         }
@@ -44,7 +52,8 @@ long searchNewMax(long filterBuffer[], int size){
     return currentMax;
 }
 
-char peakDetectOneFreq(long filterBuffer, int * iter, long * max, long input, int maxIter, long minValue){
+char peakDetectOneFreq(int * filterBuffer, int * iter, int * max, int input,
+                       int maxIter, int minValue){
     if ((filterBuffer[*iter] == *max) && (input < filterBuffer[*iter])){
         filterBuffer[*iter] = input;
         *max = searchNewMax(filterBuffer, maxIter);
@@ -54,9 +63,18 @@ char peakDetectOneFreq(long filterBuffer, int * iter, long * max, long input, in
             *max = input;
         }
     }
-    *iter++;
+    *iter = (*iter)+1;
     if (*iter == maxIter){
         *iter = 0;
     }
     return *max > minValue;
 }
+
+char peakDetect(int input[2]){
+    detected900 = peakDetectOneFreq(filterBuffer900, &iter900, &max900,
+                                    input[0], maxIter900,minValue900);
+    detected1100 = peakDetectOneFreq(filterBuffer1100, &iter1100, &max1100,
+                                     input[1], maxIter1100,minValue1100);
+    return detected900 | 2*detected1100;
+}
+

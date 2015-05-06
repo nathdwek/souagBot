@@ -8,7 +8,8 @@
 #ifndef PEAKDETECTOR_H
 #define	PEAKDETECTOR_H
 
-peakDetect
+void initPeakDetector();
+char peakDetect(int input[2]);
 
 #endif	/* PEAKDETECTOR_H */
 

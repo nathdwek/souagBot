@@ -3,9 +3,12 @@
 #include "filter.h"
 #include "peakDetector.h"
 #include "globals.h"
+#include "fskDetector.h"
+#include "uart.h"
 
 int filterOutput[2];
 char peakDetected;
+int fskOutput;
 
 void initADC(){
     AD1CON2bits.VCFG = 0b100;//On a pas de référence de tension extérieure.
@@ -36,9 +39,12 @@ void initADC(){
 void _ISR _ADC1Interrupt(void){
     IFS0bits.AD1IF = 0;
     filterNewSample(ADC1BUF0, filterOutput);
-//    if (rmsDetect(filterOutput,bitDetected) == 1){
-//
-//    }
     peakDetected = peakDetect(filterOutput);
+    char a = peakDetected;
+    fskOutput = fskDetector(peakDetected & 1, (peakDetected & 2)/2);
+    if (fskOutput != 0){
+        command = fskOutput;
+        sendCommand();
+    }
     LATAbits.LATA0 = !LATAbits.LATA0;
 }
