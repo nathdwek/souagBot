@@ -13,7 +13,7 @@ void configPWM(){
     OC1CONbits.OCM=0b110;//Mode PWM no fault protection
     OC2CONbits.OCM=0b110;//Mode PWM no fault protection
     T2CONbits.TCKPS=0b01;//Prescaler 8
-    PR2=50000;//Periode du timer 2=50000*(1/40*1000000)*8=1/100s
+    PR2=PROC_FCY/(REGUL_FCY*8)-1;
     OC1CONbits.OCTSEL=0;
     OC2CONbits.OCTSEL=0;//Les deux Output compare utilisent le timer 2
     T2CONbits.TON =1;//Lance Timer2
