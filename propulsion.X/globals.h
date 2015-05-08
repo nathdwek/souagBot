@@ -12,7 +12,6 @@
 
 #define PROC_FCY 40000000
 
-extern const int BRGVAL;
 extern const int REGUL_FCY;
 extern const float CM_PER_TICK;
 
