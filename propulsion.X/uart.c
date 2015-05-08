@@ -10,7 +10,7 @@ const int BRGVAL = ((PROC_FCY / BAUDRATE) / BRGH_COEFF) - 1;
 char receiverState;
 //0:Attend le début d'une nouvelle commande (0b11----00)
 //1:Attend la fin d'une commande en cours (0b..----00)
-unsigned char param;//Unsigned pour pouvoir faire des bitshifts en paix
+unsigned char param;
 
 void initUart(void){
     //Config Générale
