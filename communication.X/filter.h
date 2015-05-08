@@ -7,11 +7,14 @@
 
 #ifndef FILTER_H
 #define	FILTER_H
+//#define FILTER_DBG
+
 void initFilter();
 void filterNewSample(unsigned int sample, int returnArray[2]);
 
-//TEST
+#ifdef FILTER_DBG
 void generateSineInput(int length, float frequency, int returnArray[]);
 float rms(float array[],int arrayLength);
+#endif
 
 #endif	/* FILTER_H */

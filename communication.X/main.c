@@ -3,9 +3,9 @@
 #include "init.h"
 #include "globals.h"
 #include "uart.h"
-#include "math.h"
 #include "filter.h"
 #include "ADC.h"
+#include "peakDetector.h"
 
 int main(void){
     init();

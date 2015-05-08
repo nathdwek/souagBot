@@ -1,6 +1,8 @@
 #include "globals.h"
 #include "filter.h"
+#ifdef FILTER_DBG
 #include "math.h"//Remove for production
+#endif
 
 #define sectionOrder 3 //n n-1 n-2
 
@@ -72,7 +74,7 @@ void filterNewSample(unsigned int sample, int returnArray[2]){
     returnArray[1] = y_1100[0];
 }
 
-//TEST
+#ifdef FILTER_DBG
 //NEEDS math.h
 float rms(float array[],int arrayLength){
     int i;
@@ -92,3 +94,4 @@ void generateSineInput(int length,float frequency, int returnArray[]){
         returnArray[i] = 1000*sample;
     }
 }
+#endif

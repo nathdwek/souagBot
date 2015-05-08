@@ -7,12 +7,14 @@
 
 #ifndef UART_H
 #define	UART_H
+//#define UART_DBG
 
 void initUart(void);
 void sendCommand(void);
 
-//dbg
+#ifdef UART_DBG
 extern int command;
+#endif
 
 #endif	/* UART_H */
 
