@@ -51,8 +51,7 @@ void _ISR _ADC1Interrupt(void){
 
     fskOutput = fskDetector(peakDetected & 1, (peakDetected & 2)/2);
     if (fskOutput != 0){
-        command = fskOutput;
-        sendCommand();
+        sendCommand(fskOutput);//Envoie la trame
     }
     LATAbits.LATA0 = !LATAbits.LATA0;
 }

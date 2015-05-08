@@ -10,7 +10,7 @@
 //#define UART_DBG
 
 void initUart(void);
-void sendCommand(void);
+void sendCommand(int newCommand);
 
 #ifdef UART_DBG
 extern int command;

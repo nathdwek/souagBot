@@ -48,7 +48,10 @@ void initUart(void){
     U1STAbits.UTXEN = 1;//UART prend le controle des ports
 }
 
-void sendCommand(void){
+void sendCommand(int newCommand){
+    if (newCommand != 0xFF){
+        command = newCommand;
+    }
     IEC0bits.U1TXIE = 1;
     if (U1STAbits.UTXBF == 0){
         senderState = 1;
@@ -62,7 +65,7 @@ void sendCommand(void){
 void handleReceived(char received){
     if (received == 1){
     //askRepeat effectué côté propulsion
-        sendCommand();
+        sendCommand(0xFF);
     }//nothing else so far
 }
 
