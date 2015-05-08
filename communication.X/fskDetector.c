@@ -1,4 +1,4 @@
-#include "FskDetector.h"
+#include "fskDetector.h"
 #ifdef DEBUG_FSK_DETECTOR
 #include <stdio.h>
 #endif
@@ -26,7 +26,7 @@ int fskDetector(int detLow, int detHigh) {
 	static int timer=0, countL=0, countH=0, bitNb=0, parity=0;
 	SignalStateType signalState;
 
-	// D�termination de l'�tat du signal
+	// Détermination de l'état du signal
 	if (!detHigh) {
 		if (!detLow) {signalState = SILENCE;}
 		else {signalState = BIT0;}
@@ -34,7 +34,7 @@ int fskDetector(int detLow, int detHigh) {
 		if (!detLow) {signalState = BIT1;}
 		else {signalState = BRUIT;}
 	}
-	// Machine d'�tat
+	// Machine d'état
 	switch(state) {
 		case IDLE:
 			// Actions : none
