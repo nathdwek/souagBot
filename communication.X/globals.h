@@ -14,8 +14,5 @@
 #define FS 20000
 #define FSYMBOL 10
 
-extern const int BAUDRATE;
-extern const int BRGVAL;
-
 #endif	/* GLOBALS_H */
 

@@ -8,7 +8,6 @@
       <itemPath>globals.h</itemPath>
       <itemPath>uart.h</itemPath>
       <itemPath>filter.h</itemPath>
-      <itemPath>rmsDetector.h</itemPath>
       <itemPath>ADC.h</itemPath>
       <itemPath>fskDetector.h</itemPath>
       <itemPath>peakDetector.h</itemPath>
@@ -22,10 +21,8 @@
                    projectFiles="true">
       <itemPath>init.c</itemPath>
       <itemPath>main.c</itemPath>
-      <itemPath>globals.c</itemPath>
       <itemPath>uart.c</itemPath>
       <itemPath>filter.c</itemPath>
-      <itemPath>rmsDetector.c</itemPath>
       <itemPath>ADC.c</itemPath>
       <itemPath>fskDetector.c</itemPath>
       <itemPath>peakDetector.c</itemPath>
