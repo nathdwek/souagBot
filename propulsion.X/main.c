@@ -19,6 +19,8 @@ int main() {
     configRegul();
     initUart();
     while(1){
+        /*Voir la fonction T1Interrupt dans regul.c pour avoir une rapide idée
+         de ce que fait le code.(+U1TXInterrupt in uart.c)*/
     }
 }
 

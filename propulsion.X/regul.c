@@ -27,7 +27,10 @@ void configRegul(){
     resetStateVariables();
 }
 
-void accelerate(float* speed, float* acceleration, float maxSpeed){
+void accelerate(float * speed, float * acceleration, float maxSpeed){
+    //Une simple accélération avec vitesse max (utilisée pour omega et v)
+    //On joue avec des pointeurs parce que la fonction fonctionne par
+    //effet de bord
     *speed = *speed+(*acceleration)/REGUL_FCY;
     if (fabs(*speed) > maxSpeed && sgn(*acceleration) == sgn(goalDistance)){
         *acceleration = 0;
@@ -35,14 +38,17 @@ void accelerate(float* speed, float* acceleration, float maxSpeed){
 }
 
 
-void updateConsignes(void){
+void updateConsignes(void){//Explicite
     distanceConsigne = distanceConsigne + speedConsigne/REGUL_FCY;
     thetaConsigne = thetaConsigne + angularSpeedConsigne/REGUL_FCY;
+    
     accelerate(&speedConsigne, &acceleration, MAX_SPEED);
     accelerate(&angularSpeedConsigne, &angularAcceleration, MAX_ANGULAR_SPEED);
 }
 
 void setPWMs(float distance){
+    //Regulation proportionelle sur la distance parcourue
+                               //et la rotation effectuée
     float distanceError = (distanceConsigne - distance);
     float thetaError = (thetaConsigne - theta);
 
@@ -79,6 +85,7 @@ void checkTerminalConditions(){
     }
 }
 
+//Where the magic happens
 void _ISR _T1Interrupt(void){
     IFS0bits.T1IF = 0;
 

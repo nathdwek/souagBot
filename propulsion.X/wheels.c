@@ -20,14 +20,16 @@ void configPWM(){
     resetMotors();
 }
 
-//Persistantes pour calculer les distances et angles
+//Persistantes pour calculer les distances,
 int leftSpins;
 int rightSpins;
+//La vitesse angulaire,
 float oldRightDistance;
 float oldLeftDistance;
+//et theta
 float theta;
 
-void resetPositionVariables(){
+void resetPositionVariables(){//Explicite
     leftSpins = 0;
     rightSpins = 0;
     POS1CNT = 0;
@@ -60,6 +62,7 @@ void configQEI(){
 }
 
 void _ISR _QEI1Interrupt(void){//RIGHT
+    //Incrémente ou décrémente le compteur de tour selon le sens de rotation
     IFS3bits.QEI1IF = 0;
     if (QEI1CONbits.UPDN == 1){
         rightSpins = rightSpins + 1;
@@ -70,6 +73,7 @@ void _ISR _QEI1Interrupt(void){//RIGHT
 }
 
 void _ISR _QEI2Interrupt(void){//LEFT
+    //cf QEI1Interrupt
     IFS4bits.QEI2IF = 0;
     if (QEI2CONbits.UPDN == 1){
         leftSpins = leftSpins - 1;
@@ -80,14 +84,20 @@ void _ISR _QEI2Interrupt(void){//LEFT
 
 //Interface avec la regul
 float readDistances(){
+    //Distance totale parcourue par les roues jusqu'à présent
     float leftDistance = leftSpins * (float)MAX2CNT - (float)POS2CNT;
     float rightDistance = rightSpins * (float)MAX1CNT + (float)POS1CNT;
+
+    //Distance totale parcourue par le centre de l'axe des roues du robot
     float distance = 0.5*(leftDistance + rightDistance) * CM_PER_TICK;
 
+    //Vitesse angulaire instantanée autour de ce point
     float omega = (rightDistance - oldRightDistance
                    - (leftDistance - oldLeftDistance))*CM_PER_TICK/22.5;
+    //Intégration
     theta = theta + omega;
 
+    //Tick temporel
     oldRightDistance = rightDistance;
     oldLeftDistance = leftDistance;
     return distance;
