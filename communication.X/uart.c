@@ -49,16 +49,22 @@ void initUart(void){
 }
 
 void sendCommand(int newCommand){
+    /*Renvoie la commande en cours si newCommand = 0xFF, sinon remplace la
+     *commande est cours et envoie la nouvelle commande*/
     if (newCommand != 0xFF){
         command = newCommand;
     }
-    IEC0bits.U1TXIE = 1;
-    if (U1STAbits.UTXBF == 0){
-        senderState = 1;
-        char part1 = (command & 0b0000000011110000)/4 + 0b11000000;
-        U1TXREG = part1;
+    IEC0bits.U1TXIE = 1;//Demande  à être interrompu dès qu'une transmission est
+                        //possible
+    if (U1STAbits.UTXBF == 0){//Si on peut déjà commencer à écrire
+        //Envoie la première partie
+        char part1 = (command & 0b0000000011110000)/4 + 0b11000000;//Construit
+                                                          //la première partie
+        U1TXREG = part1;//Envoie la première partie
+        senderState = 1;//Etat passe à 1: première partie envoyée
     }else{
-        senderState = 0;
+        //On peut encore rien faire
+        senderState = 0;//Etat=0 Il reste tout à envoyer
     }
 }
 
@@ -75,10 +81,15 @@ void _ISR _U1RXInterrupt(void){
         char received = U1RXREG;
         handleReceived(received);
     }//askRepeat ici aussi?
+     //On a jamais eu de souci avec l'uart (2 fils sur 5 cm aussi) donc l'error
+     //catching est assez rudimentaire
 }
 
 void _ISR _U1TXInterrupt(void){
+    //On peut envoyer une partie de commande
     IFS0bits.U1TXIF = 0;
+
+    //Envoyer la partie 1 ou 2 selon l'état, et switcher l'état
     if (senderState == 0){
         char part1 = (command & 0b0000000011110000)/4 + 0b11000000;
         U1TXREG = part1;
@@ -88,5 +99,7 @@ void _ISR _U1TXInterrupt(void){
                  +(command & 0b0000001100000000)/4;
         U1TXREG = part2;
         IEC0bits.U1TXIE = 0;
+        //Les deux parties ont été envoyées, plus besoin d'être interrompu
+        //jusqu'à la prochaine commande à envoyer
     }
 }

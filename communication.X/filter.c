@@ -8,6 +8,7 @@
 
 //COEFFICIENTS DES FILTRES PB NUMERIQUES
 //Les filtres sont normalisés: ai0=bi0=1
+//Coefficients int16 = 10000*coeff de matlab
 
 //Filtre centré autour de 900
 //Section 1
@@ -19,11 +20,11 @@ const int g900_1 = 93;
 
 //Filtre centré autour de 1100
 //Section 1
-const int a1100_11 = -18642;//*3/4;
-const int a1100_12 = 9813;//*3/4;
-const int b1100_11 = 0;//*3/4;
-const int b1100_12 = -10000;//*3/4;
-const int g1100_1 = 93;//*3/4;
+const int a1100_11 = -18642;
+const int a1100_12 = 9813;
+const int b1100_11 = 0;
+const int b1100_12 = -10000;
+const int g1100_1 = 93;
 
 //X:entrée "générale"
 //Y:sortie "générale"
@@ -59,15 +60,14 @@ long recurrence(long a1, long a2, long gain,
     //Recurrence ordre 2 normalisée
     //Opti: b1 et b2 sont toujours (0,1)
     return (gain*(arrayX[0]-arrayX[2])-a1*arrayY[1]-a2*arrayY[2])/10000;
+    //Division par 10000 pour revenir sur du int8
 }
 
 void filterNewSample(unsigned int sample, int returnArray[2]){
     shiftArrays();
-
     x[0] = sample;
     
     y_900[0] = recurrence(a900_11,a900_12,g900_1,x,y_900);
-
     y_1100[0] = recurrence(a1100_11,a1100_12,g1100_1,x,y_1100);
     
     returnArray[0] = y_900[0];

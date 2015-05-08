@@ -13,5 +13,7 @@ int main(void){
     initFilter();
     initADC();
     while(1){
+        /*Voir la fonction ADC1Interrupt dans ADC.c pour avoir une rapide idée
+        de ce que fait le code*/
     }
 }

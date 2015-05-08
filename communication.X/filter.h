@@ -11,6 +11,7 @@
 
 void initFilter();
 void filterNewSample(unsigned int sample, int returnArray[2]);
+//filterNewSample ne renvoie rien, elle écrit dans l'array passé en deuxième arg
 
 #ifdef FILTER_DBG
 void generateSineInput(int length, float frequency, int returnArray[]);

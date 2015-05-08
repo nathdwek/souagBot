@@ -31,27 +31,35 @@ void initADC(){
     IEC0bits.AD1IE = 1;//Enable interrupt
 
     AD1CON1bits.ADON = 1;//Lance l'adc
+    
+    //DBG info
     TRISAbits.TRISA0 = 0;
-    LATAbits.LATA0 = 1;
-
-    //DBG
-    TRISBbits.TRISB9 = 0;
+    LATAbits.LATA0 = 1;//patte utilisée pour mesurer la vitesse de la routine
+                       //ADC à l'oscillo
+    TRISBbits.TRISB9 = 0;//Led témoin qu'une des fréq est détectée
 }
 
-
+//C'est ici que tout se passe!!
 void _ISR _ADC1Interrupt(void){
     IFS0bits.AD1IF = 0;
+    
     filterNewSample(ADC1BUF0, filterOutput);
-    peakDetected = peakDetect(filterOutput);
+    peakDetected = peakDetect(filterOutput);//Explicite
+    
     if ((peakDetected & 2) == 2){
         LATBbits.LATB9 = 1;
     }else{
         LATBbits.LATB9 = 0;
-    }
+    }//Led témoin détecte le 1100Hz
 
     fskOutput = fskDetector(peakDetected & 1, (peakDetected & 2)/2);
-    if (fskOutput != 0){
+    //peakDetected est un char dont le LSB est 0 ou 1 selon que du 900Hz est détecté
+                                  //le LSB+1 est 0 ou 1 selon que du 1100Hz est détecté
+
+    if (fskOutput != 0){//fskDetector a décodé une trame complète
         sendCommand(fskOutput);//Envoie la trame
     }
-    LATAbits.LATA0 = !LATAbits.LATA0;
+    
+    LATAbits.LATA0 = !LATAbits.LATA0;//Flip le bit pour mesurer la fréquence
+                                     //d'échantillonnage effective
 }
