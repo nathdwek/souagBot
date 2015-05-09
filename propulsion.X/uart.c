@@ -32,8 +32,7 @@ void initUart(void){
     IEC0bits.U1TXIE = 0;//Disable UART TX interrupt
     //=>Osef des deux lignes suivantes:
     //U1STAbits.UTXISEL0 = 0;
-    //U1STAbits.UTXISEL1 = 0;//Déclenche une interruption dès qu'il est possible
-                           //d'écrire dans le registre d'envoi
+    //U1STAbits.UTXISEL1 = 0;
     U1STAbits.URXISEL = 0b00;//Déclenche une interruption à chaque trame reçue
     IEC0bits.U1RXIE = 1;//Enable UART RX interrupt
 
@@ -59,6 +58,8 @@ char askRepeat(){
 //Il y a eu une erreur. Demande de répéter une commande entière et état=>0.
     if (U1STAbits.UTXBF == 0){
         U1TXREG = 0b00000001;
+    }else{
+        //Doesn't ever happen
     }
     return 0;
 }

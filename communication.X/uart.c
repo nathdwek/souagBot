@@ -27,9 +27,10 @@ void initUart(void){
 
     //Modes d'interruption:
     IEC0bits.U1TXIE = 0;//Disable UART TX interrupt
-    //=>Osef des deux lignes suivantes:
-    //U1STAbits.UTXISEL0 = 0;
-    //U1STAbits.UTXISEL1 = 0;//Déclenche une interruption dès qu'il est possible
+    //Mais elle activée temporairement quand une trame FSK doit être envoyée
+    //Donc il faut config la suite:
+    U1STAbits.UTXISEL0 = 0;
+    U1STAbits.UTXISEL1 = 0;//Déclenche une interruption dès qu'il est possible
                            //d'écrire dans le registre d'envoi
     U1STAbits.URXISEL = 0b00;//Déclenche une interruption à chaque trame reçue
     IEC0bits.U1RXIE = 1;//Enable UART RX interrupt
