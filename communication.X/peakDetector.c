@@ -103,7 +103,8 @@ char peakDetectOneFreq(int filterBuffer[], int * iter, int * max, int input,
     if (*iter == maxIter){
         *iter = 0;
     }//Update l'itérateur
-    
+
+
     return *max > minValue;//Fréquence détectée?
 }
 
