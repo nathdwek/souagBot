@@ -37,6 +37,7 @@ void initADC(){
     LATAbits.LATA0 = 1;//patte utilisée pour mesurer la vitesse de la routine
                        //ADC à l'oscillo
     TRISBbits.TRISB9 = 0;//Led témoin qu'une des fréq est détectée
+    TRISBbits.TRISB14 = 0;//Led témoin qu'une des fréq est détectée
 }
 
 //C'est ici que tout se passe!!
@@ -52,6 +53,12 @@ void _ISR _ADC1Interrupt(void){
         LATBbits.LATB9 = 0;
     }//Led témoin détecte le 1100Hz
 
+    if ((peakDetected & 1) == 1){
+        LATBbits.LATB14 = 1;
+    }else{
+        LATBbits.LATB14 = 0;
+    }//Led témoin détecte le 900Hz
+    
     fskOutput = fskDetector(peakDetected & 1, (peakDetected & 2)/2);
     //peakDetected est un char dont le LSB est 0 ou 1 selon que du 900Hz est détecté
                                   //le LSB+1 est 0 ou 1 selon que du 1100Hz est détecté

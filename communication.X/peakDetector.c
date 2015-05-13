@@ -31,7 +31,7 @@ int max1100;
 
 //Valeurs plancher du max pour considérer qu'une fréquence est présente
 int minValue900 = 135;
-int minValue1100 = 135;
+int minValue1100 = 133;
 
 /*On éxécute deux fois la même fonction peakDetectOneFreq: une fois pour chaque
  *fréquence. La sortie est stockée dans ces variables, à partir desquelles on
