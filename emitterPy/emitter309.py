@@ -10,14 +10,14 @@ def sendBtEvFc():
     if dataStr.isdigit():                                   # si le paramètre est un nombre
         data = int(dataStr)                                     # on le traduit
     else:                                                   # sinon
-        data = 0                                                # on le choisit nul
+        data = "error"                                                # on le choisit nul
     if command==commandList[0]:                             # Vérifie si le paramètre est dans 
         if (data>127) or (data<-128):                       # l'intervalle autorisé pour la commande
-            data = 0                                        # si non, on le choisit nul
+            data = "error"                                        # si non, on le choisit nul
     if command==commandList[1] or command==commandList[2]:  # Vérifie si le paramètre est dans 
         if (data>127) or (data<0):                          # l'intervalle autorisé pour la commande
-            data = 0                                        # si non, on le choisit nul
-    if data!=0:                                             # si le paramètre n'est pas nul
+            data = "error"                                        # si non, on le choisit nul
+    if data!="error":                                             # si le paramètre n'est pas nul
         f = createFrame(command,data)                           # on construit la trame de bit
         s = createSignal(f)                                     # puis le signal audio
         playSignal(s)                                           # et on le joue

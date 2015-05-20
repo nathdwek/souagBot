@@ -18,6 +18,7 @@ extern char goingStraight;
 extern char rotating;
 
 void resetStateVariables();
+void stop();
 
 void rotate(char angleInDegrees, char way);
 void straight(char distance);
