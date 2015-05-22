@@ -40,6 +40,7 @@ void stop(){
 
 void straight(char newGoalDistance){
     stop();
+    if (newGoalDistance != 0){
     kp = 0.002;
     angularKp = 0.2;
     acceleration = sgn(newGoalDistance)*ACCELERATION;
@@ -48,6 +49,7 @@ void straight(char newGoalDistance){
         decelerationDistance = goalDistance/3;
     }
     goingStraight = 1;
+    }
 }
 
 void rotate(unsigned char angleInDegrees, char sgn){

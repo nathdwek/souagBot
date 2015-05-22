@@ -96,7 +96,7 @@ int fskDetector(int detLow, int detHigh) {
 			if (signalState == BIT1) {countH++;}
 			// Transitions
 			if (timer >= OSR) {
-				if (parity%2) {												// Message parity is odd
+				if (parity%2 && parity>0) {												// Message parity is odd
 					if (countH >= FSK_MIN_SAMPLES_NB) {
 						state = STOP_BIT;
 						timer = 0;   countL = 0;   countH = 0;				// Initial actions of STOP_BIT
@@ -143,7 +143,11 @@ int fskDetector(int detLow, int detHigh) {
 	}
 	if (messageComplete) {
 		messageComplete = 0;
-		return(message);
+                if (message == 0){
+                    return 0xF000;
+                }else{
+                    return(message);
+                }
 	} else {
 		return(0);
 	}

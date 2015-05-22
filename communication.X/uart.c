@@ -52,7 +52,7 @@ void initUart(void){
 void sendCommand(int newCommand){
     /*Renvoie la commande en cours si newCommand = 0xFF, sinon remplace la
      *commande est cours et envoie la nouvelle commande*/
-    if (newCommand != 0xFF){
+    if (newCommand != 0xFFFF){
         command = newCommand;
     }
     IEC0bits.U1TXIE = 1;//Demande  à être interrompu dès qu'une transmission est
@@ -72,7 +72,7 @@ void sendCommand(int newCommand){
 void handleReceived(char received){
     if (received == 1){
     //askRepeat effectué côté propulsion
-        sendCommand(0xFF);
+        sendCommand(0xFFFF);
     }//nothing else so far
 }
 
