@@ -46,17 +46,33 @@ void updateConsignes(void){//Explicite
     accelerate(&angularSpeedConsigne, &angularAcceleration, MAX_ANGULAR_SPEED);
 }
 
+void saturate(float * pwm){//explicite
+    //Breakpoint dans les if en mode debug pour détecter la saturation
+    if (*pwm>0.2){
+        *pwm = 0.2;
+    }else if(*pwm<0.1){
+        *pwm = 0.1;
+    }
+}
+
 void setPWMs(float distance){
     //Regulation proportionelle sur la distance parcourue
                                //et la rotation effectuée
-    float distanceError = (distanceConsigne - distance);
-    float thetaError = (thetaConsigne - theta);
+    static float distanceError,thetaError,leftPWM,rightPWM;
+    //Ya plein d'autre variables qui devraient être statique
+    //Je viens de le découvrir dans le cours, donc pas trop le temps
+    //de refactor proprement.
+    distanceError = (distanceConsigne - distance);
+    thetaError = (thetaConsigne - theta);
 
-    float leftPWM = 0.15 + kp * distanceError;
-    float rightPWM = 0.15 - kp * distanceError;
+    leftPWM = 0.15 + kp * distanceError;
+    rightPWM = 0.15 - kp * distanceError;
 
     leftPWM = leftPWM - angularKp * thetaError;
     rightPWM = rightPWM - angularKp * thetaError;
+
+    saturate(&leftPWM);
+    saturate(&rightPWM);
 
     OC2RS = leftPWM * PR2;
     OC1RS = rightPWM * PR2;
