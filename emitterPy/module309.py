@@ -3,7 +3,9 @@ from numpy import int16,linspace,sin,pi, hstack
 
 
 commandDico = {'Avance':[0,0], 'Droite':[0,1], 'Gauche':[1,0]}
-commandList = list(commandDico.keys())
+commandList = ['Avance', 'Droite','Gauche']
+print(commandList)
+
 
 # L'amplitude max du signal est de 1
 def playSignal(signal, sampleRate=44100):
@@ -25,9 +27,19 @@ def playSignal(signal, sampleRate=44100):
     p.terminate()
 
 
+
+
+def twos_comp(val, bits):
+    """compute the 2's compliment of int value val"""
+    if (val & (1 << (bits - 1))) != 0: # if sign bit is set e.g., 8bit: 128-255
+        val = val - (1 << bits)        # compute negative value
+    return val
+
 def createFrame(command, data):
     "Cette fonction crée la trame audio correspondant à la commande voulue"
     message = commandDico[command]
+    if data < 0:
+        data = data+256
     s = bin(data)
     message = message + [0]*(10-len(s))
     for a in list(s[2:]):

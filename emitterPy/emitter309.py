@@ -7,8 +7,9 @@ def sendBtEvFc():
     "Envoie la commande définie par 'commandSelectCb' et 'dataEn'"
     command = commandSelectCb.get()                         # récupèration de la commande
     dataStr = dataEn.get()                                  # récupération du paramètre (en string)
-    if dataStr.isdigit():                                   # si le paramètre est un nombre
+    if True:                                 # si le paramètre est un nombre
         data = int(dataStr)                                     # on le traduit
+        print(data)
     else:                                                   # sinon
         data = "error"                                                # on le choisit nul
     if command==commandList[0]:                             # Vérifie si le paramètre est dans 
